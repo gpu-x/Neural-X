@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#05020a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="description" content="Neural-X Cybersecurity Operations Console">
+<title>Neural-X Console v4.1</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--nc:#00f0ff;--nm:#bd00ff;--dp:#2e1a47;--vb:#05020a;--g1:rgba(189,0,255,.28);--g2:rgba(94,0,200,.22);--g3:rgba(138,43,226,.2);--gi:rgba(75,0,130,.28);--gc:rgba(0,240,255,.08);--gb:rgba(46,26,71,.65);--gbr:rgba(0,240,255,.25);--fm:'Courier New',monospace;--tf:.15s ease;--ts:.3s cubic-bezier(.4,0,.2,1)}
+html,body{width:100%;height:100%;overflow:hidden;font-family:var(--fm);background:var(--vb);color:var(--nc);letter-spacing:.02em}
+.nl{position:fixed;inset:0;z-index:-3;background:var(--vb);overflow:hidden;pointer-events:none;contain:strict}
+.nl .d{position:absolute;inset:-50%;will-change:transform;transform:translateZ(0)}
+.nl .da{background:radial-gradient(ellipse 60% 50% at 20% 30%,var(--g1) 0%,transparent 55%),radial-gradient(ellipse 50% 60% at 80% 70%,var(--g2) 0%,transparent 55%),radial-gradient(ellipse 70% 40% at 50% 50%,var(--gc) 0%,transparent 65%);animation:nd 45s ease-in-out infinite}
+.nl .db{background:radial-gradient(ellipse 55% 55% at 65% 20%,var(--g3) 0%,transparent 50%),radial-gradient(ellipse 65% 45% at 30% 80%,var(--gi) 0%,transparent 55%);animation:nd 70s ease-in-out infinite reverse;opacity:.75}
+.nl .v{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 40%,rgba(5,2,10,.7) 100%)}
+@keyframes nd{0%{transform:translate(0,0) rotate(0) scale(1)}33%{transform:translate(4%,-3%) rotate(120deg) scale(1.04)}66%{transform:translate(-3%,4%) rotate(240deg) scale(.98)}100%{transform:translate(0,0) rotate(360deg) scale(1)}}
+#bg-canvas{position:fixed;inset:0;z-index:-2;pointer-events:none;contain:strict;width:100%;height:100%}
+#dov{position:fixed;inset:0;background:rgba(5,2,10,.96);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;border:2px solid var(--nm);backdrop-filter:blur(12px);transition:opacity .4s,visibility .4s}
+#dov.h{opacity:0;visibility:hidden;pointer-events:none}
+#dov h1{color:var(--nm);font-size:clamp(1.4rem,5vw,2rem);margin-bottom:15px;text-shadow:0 0 15px var(--nm);letter-spacing:3px}
+#dov p{color:#ccc;font-size:.9rem;line-height:1.6;max-width:600px;margin-bottom:20px}
+#dov .wb{border:1px solid var(--nc);padding:18px;margin-bottom:25px;background:rgba(0,240,255,.05);max-width:600px;border-radius:6px}
+#ubtn{background:0 0;color:var(--nc);border:2px solid var(--nc);padding:16px 48px;font-family:var(--fm);font-size:1rem;cursor:pointer;text-transform:uppercase;letter-spacing:3px;box-shadow:0 0 18px rgba(0,240,255,.3);transition:all var(--ts);border-radius:4px;font-weight:700}
+#ubtn:hover{background:rgba(0,240,255,.1);box-shadow:0 0 28px rgba(0,240,255,.5)}
+#ubtn:active{background:var(--nc);color:var(--vb)}
+#ubtn:disabled{opacity:.5;cursor:not-allowed}
+#err-box{position:fixed;top:10px;right:10px;background:rgba(255,0,0,.15);border:2px solid #f55;color:#f88;padding:12px 16px;border-radius:8px;max-width:300px;font-size:.85rem;z-index:10000;display:none;animation:slideIn .3s ease;backdrop-filter:blur(8px)}
+#err-box.show{display:block}
+@keyframes slideIn{from{transform:translateX(400px);opacity:0}to{transform:translateX(0);opacity:1}}
+#ac{width:100%;height:100%;display:flex;flex-direction:column;padding-bottom:95px;opacity:0;transition:opacity .4s;position:relative;z-index:1;overflow:hidden}
+#ac.vis{opacity:1}
+.tc{display:none;flex:1;overflow-y:auto;overflow-x:hidden;padding:16px;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+.tc.a{display:flex;flex-direction:column;animation:fi .25s ease}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:rgba(5,2,10,.5);border-radius:8px}
+::-webkit-scrollbar-thumb{background:var(--nm);border-radius:8px}
+h2{color:var(--nm);font-size:1.2rem;margin-bottom:16px;border-bottom:1px solid var(--gbr);padding-bottom:8px;text-shadow:0 0 8px var(--nm)}
+h3{color:var(--nc);font-size:1rem;margin:16px 0 8px}
+.pn{background:var(--gb);border:1px solid var(--gbr);border-radius:10px;padding:16px;margin-bottom:16px;backdrop-filter:blur(10px);box-shadow:0 4px 20px rgba(0,0,0,.3);transition:box-shadow var(--tf)}
+.pn:hover{box-shadow:0 6px 28px rgba(0,240,255,.1)}
+label{display:block;font-size:.8rem;margin-bottom:6px;color:var(--nc);opacity:.85;text-transform:uppercase;letter-spacing:.5px}
+input,select,textarea{width:100%;background:rgba(5,2,10,.8);border:1px solid var(--gbr);color:var(--nc);font-family:var(--fm);font-size:.9rem;padding:12px;border-radius:6px;margin-bottom:14px;outline:0;-webkit-appearance:none;transition:border-color var(--tf),box-shadow var(--tf)}
+input:focus,select:focus,textarea:focus{border-color:var(--nc);box-shadow:0 0 12px rgba(0,240,255,.4)}
+textarea{resize:vertical;min-height:80px;line-height:1.5}
+select{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%2300f0ff'><path d='M7 10l5 5 5-5z'/></svg>");background-repeat:no-repeat;background-position:right 10px center;padding-right:36px}
+.btn{background:linear-gradient(135deg,rgba(189,0,255,.2),rgba(0,240,255,.15));border:1px solid var(--nc);color:var(--nc);font-family:var(--fm);padding:12px 20px;font-size:.9rem;cursor:pointer;border-radius:6px;text-transform:uppercase;letter-spacing:1.5px;transition:all var(--ts);width:100%;margin-top:6px;font-weight:700}
+.btn:hover{background:rgba(0,240,255,.1);box-shadow:0 0 16px rgba(0,240,255,.4)}
+.btn:active{background:var(--nc);color:var(--vb);transform:scale(.98)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.bs{border-color:var(--nm);color:var(--nm);background:linear-gradient(135deg,rgba(189,0,255,.2),rgba(189,0,255,.05))}
+.bs:hover{background:rgba(189,0,255,.15);box-shadow:0 0 16px rgba(189,0,255,.4)}
+.bi{display:inline-flex;align-items:center;justify-content:center;gap:6px;width:auto;padding:10px 16px}
+.ob{background:rgba(0,0,0,.7);border:1px solid var(--nc);color:#00ff88;padding:14px;border-radius:6px;font-size:.85rem;min-height:80px;white-space:pre-wrap;word-break:break-all;margin-top:12px;overflow-x:auto;box-shadow:inset 0 0 16px rgba(0,255,136,.1);font-family:var(--fm);line-height:1.6;tab-size:4;position:relative}
+.ob .copy-btn{position:absolute;top:8px;right:8px;background:rgba(0,240,255,.2);border:1px solid var(--nc);color:var(--nc);padding:6px 10px;font-size:.7rem;cursor:pointer;border-radius:4px;transition:all .2s}
+.ob .copy-btn:hover{background:rgba(0,240,255,.4)}
+.cc{display:flex;flex-direction:column;height:calc(100vh - 230px);min-height:400px}
+.ch{flex:1;overflow-y:auto;background:rgba(0,0,0,.5);border:1px solid var(--gbr);border-radius:10px;padding:12px;margin-bottom:12px}
+.cm{margin-bottom:12px;padding:12px;border-radius:8px;font-size:.85rem;line-height:1.5;max-width:92%;word-wrap:break-word;animation:fi .2s ease}
+.cm.u{background:rgba(0,240,255,.12);border:1px solid rgba(0,240,255,.4);margin-left:auto;color:var(--nc)}
+.cm.ai{background:rgba(189,0,255,.12);border:1px solid rgba(189,0,255,.4);margin-right:auto;color:#e0e0e0}
+.cm.e{background:rgba(255,0,0,.15);border:1px solid rgba(255,0,0,.5);color:#f66}
+.ci{display:flex;gap:8px;align-items:stretch;flex-wrap:wrap}
+.ci input{flex:1;margin-bottom:0;min-width:200px}
+.ci button{width:auto;margin-top:0;padding:12px 18px;white-space:nowrap}
+.fc{position:fixed;bottom:65px;left:0;width:100%;text-align:center;font-size:.65rem;color:rgba(0,240,255,.55);padding:5px 8px;z-index:999;background:linear-gradient(180deg,transparent,rgba(5,2,10,.65));backdrop-filter:blur(6px);letter-spacing:1.5px;text-transform:uppercase;border-top:1px solid rgba(189,0,255,.25)}
+#bn{position:fixed;bottom:0;left:0;width:100%;height:65px;background:rgba(5,2,10,.96);border-top:2px solid var(--nm);display:flex;justify-content:space-around;align-items:center;z-index:1000;backdrop-filter:blur(14px);padding-bottom:env(safe-area-inset-bottom,0)}
+.nb{background:0 0;border:none;color:#777;font-family:var(--fm);font-size:.7rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;padding:6px 4px;transition:all var(--ts);width:20%;border-radius:8px}
+.nb .ic{font-size:1.5rem;line-height:1;transition:transform var(--tf)}
+.nb.a{color:var(--nc);text-shadow:0 0 12px var(--nc)}
+.nb.a .ic{transform:scale(1.1)}
+.sb{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.7rem;background:rgba(0,240,255,.15);border:1px solid var(--nc);color:var(--nc);letter-spacing:.5px}
+.tg{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:10px}
+.tgb{background:rgba(0,0,0,.5);border:1px solid var(--gbr);border-radius:6px;padding:10px;cursor:pointer;transition:all var(--tf);font-size:.8rem;text-align:center}
+.tgb:hover{border-color:var(--nc);box-shadow:0 0 12px rgba(0,240,255,.3);transform:translateY(-1px)}
+.tgb.sel{border-color:var(--nm);background:rgba(189,0,255,.1)}
+.sm{height:8px;border-radius:4px;background:rgba(255,255,255,.1);overflow:hidden;margin:8px 0}
+.sm .fl{height:100%;border-radius:4px;transition:width .3s,background .3s}
+.fr{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.tc2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sv{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(5,2,10,.98);border:2px solid var(--nm);border-radius:12px;padding:24px;max-width:90%;max-height:80vh;overflow-y:auto;z-index:5000;display:none;backdrop-filter:blur(12px);box-shadow:0 0 40px rgba(189,0,255,.3)}
+.sv.show{display:block;animation:fi .3s ease}
+.sv .close{position:absolute;top:12px;right:12px;background:0 0;border:none;color:var(--nc);font-size:1.5rem;cursor:pointer}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.nl .d,#bg-canvas{animation:none!important;display:none}}
+@media(max-width:500px){.tc2{grid-template-columns:1fr}.ci{flex-wrap:wrap}.nb{font-size:.6rem}.ci input{min-width:100%}}
+</style>
+</head>
+<body>
+<div class="nl" aria-hidden="true"><div class="d da"></div><div class="d db"></div><div class="v"></div></div>
+<canvas id="bg-canvas" aria-hidden="true"></canvas>
+<div id="err-box"></div>
+<div id="dov">
+<h1>⚠ NEURAL-X SECURE TERMINAL</h1>
+<div class="wb">
+<p style="color:var(--nm);margin-bottom:10px"><strong>LEGAL &amp; ETHICAL DISCLAIMER</strong></p>
+<p>Questo console è progettato esclusivamente per <strong>authorized security testing</strong>, ricerca educativa e operazioni difensive su sistemi di cui sei proprietario o hai autorizzazione esplicita.</p>
+<p style="margin-top:12px;color:#f55">L'accesso non autorizzato è illegale. Zero responsabilità per abusi.</p>
+</div>
+<p>Procedendo, certifichi la conformità alle leggi applicabili.</p>
+<button id="ubtn">INITIATE SESSION</button>
+</div>
+<div id="ac">
+<div id="t-tools" class="tc a">
+<h2>⚔ OPERATIVE TOOLS</h2>
+<div class="pn">
+<input type="text" id="ts" placeholder="🔍 Search tools..." autocomplete="off">
+<div class="fr" style="justify-content:space-between;margin-top:8px">
+<span class="sb">📦 <span id="tcnt">0</span> assets</span>
+<span class="sb" style="background:rgba(189,0,255,.15);border-color:var(--nm);color:var(--nm)">⚡ READY</span>
+</div>
+</div>
+<div class="tg" id="tgr"></div>
+</div>
+<div id="t-payload" class="tc">
+<h2>☠ PAYLOAD GENERATOR</h2>
+<div class="pn">
+<h3>🎯 MSFVENOM CONFIGURATOR</h3>
+<label>LHOST</label><input type="text" id="plh" placeholder="192.168.1.100" autocomplete="off">
+<label>LPORT</label><input type="number" id="plp" value="4444" min="1" max="65535">
+<div class="tc2">
+<div><label>Payload Type</label><select id="plt"><option value="reverse_tcp">Reverse TCP</option><option value="reverse_https">Reverse HTTPS</option><option value="reverse_http">Reverse HTTP</option><option value="bind_tcp">Bind TCP</option><option value="shell_reverse_tcp">Shell Reverse TCP</option><option value="meterpreter_reverse_https">Meterpreter Reverse HTTPS</option></select></div>
+<div><label>Format</label><select id="plf"><option value="exe">Windows .exe</option><option value="elf">Linux ELF</option><option value="apk">Android APK</option><option value="py">Python</option><option value="sh">Bash</option><option value="ps1">PowerShell</option><option value="raw">Raw</option><option value="c">C Source</option><option value="dll">Windows DLL</option><option value="msi">Windows MSI</option><option value="vba">VBA Macro</option><option value="hta">HTA</option><option value="jar">Java JAR</option><option value="war">Java WAR</option><option value="php">PHP</option><option value="asp">ASP</option><option value="aspx">ASPX</option><option value="macho">macOS Mach-O</option></select></div>
+</div>
+<div class="tc2">
+<div><label>Arch</label><select id="pla"><option value="x64">x64</option><option value="x86">x86</option><option value="aarch64">ARM64</option><option value="armle">ARM LE</option></select></div>
+<div><label>Encoder</label><select id="ple"><option value="none">None</option><option value="shikata_ga_nai">Shikata Ga Nai</option><option value="cmd/powershell_base64">PowerShell Base64</option><option value="x86/shikata_ga_nai">x86 Shikata</option></select></div>
+</div>
+<button class="btn" id="gpb">⚡ GENERATE</button>
+<div class="ob" id="po">// Awaiting parameters...</div>
+<button class="btn bs" id="cpb">📋 COPY</button>
+</div>
+</div>
+<div id="t-code" class="tc">
+<h2>⌨ CODE LIBRARY</h2>
+<div class="pn">
+<div class="tc2">
+<div><label>Language</label><select id="cl"><option value="python">Python</option><option value="bash">Bash</option><option value="c">C</option><option value="powershell">PowerShell</option><option value="go">Go</option><option value="rust">Rust</option><option value="ruby">Ruby</option><option value="java">Java</option></select></div>
+<div><label>Category</label><select id="cc"></select></div>
+</div>
+<label>Snippet</label><select id="cs"></select>
+<button class="btn" id="gcb">⚡ LOAD SNIPPET</button>
+<div class="ob" id="co" style="min-height:200px">// Select language, category, and snippet...</div>
+<button class="btn bs" id="ccb">📋 COPY CODE</button>
+</div>
+</div>
+<div id="t-crypt" class="tc">
+<h2>🔐 CRYPT-X</h2>
+<div class="pn">
+<h3>🔑 HASH GENERATOR</h3>
+<label>Input Text</label><textarea id="hi" rows="2" placeholder="Enter text to hash..."></textarea>
+<div class="fr"><button class="btn bi" id="hmd5">MD5</button><button class="btn bi" id="hsha">SHA-256</button><button class="btn bi" id="hsha3">SHA-3</button></div>
+<div class="ob" id="ho">// Hash output...</div>
+</div>
+<div class="pn">
+<h3>🔄 ENCODER / DECODER</h3>
+<label>Input</label><textarea id="ei" rows="2" placeholder="Text or encoded string..."></textarea>
+<div class="fr">
+<button class="btn bi" id="eb64e">B64 Encode</button>
+<button class="btn bi" id="eb64d">B64 Decode</button>
+<button class="btn bi" id="ehxe">Hex Encode</button>
+<button class="btn bi" id="ehxd">Hex Decode</button>
+<button class="btn bi" id="eurl">URL Encode</button>
+<button class="btn bi" id="eurld">URL Decode</button>
+</div>
+<div class="ob" id="eo">// Output...</div>
+</div>
+<div class="pn">
+<h3>💪 PASSWORD STRENGTH</h3>
+<label>Password</label><input type="text" id="pi" placeholder="Enter password to test..." autocomplete="off">
+<div class="sm"><div class="fl" id="pf"></div></div>
+<p id="pt" style="font-size:.8rem;color:#888">Enter a password above</p>
+</div>
+<div class="pn">
+<h3>🎲 RANDOM KEY GENERATOR</h3>
+<label>Length (bytes)</label><input type="number" id="kl" value="32" min="8" max="256">
+<div class="fr">
+<button class="btn bi" id="khex">Hex Key</button>
+<button class="btn bi" id="kb64">Base64 Key</button>
+<button class="btn bi" id="kraw">Raw Bytes</button>
+</div>
+<div class="ob" id="ko">// Generated key...</div>
+<button class="btn bs" id="ckb">📋 COPY KEY</button>
+</div>
+</div>
+<div id="t-ai" class="tc">
+<h2>🧠 AI CORE</h2>
+<div class="pn">
+<h3>⚙️ SETTINGS</h3>
+<label>Groq API Key</label><input type="password" id="ak" placeholder="gsk_..." autocomplete="new-password" spellcheck="false">
+<label>Model</label><input type="text" id="am" value="llama3-70b-8192" placeholder="llama3-70b-8192">
+<div class="fr" style="justify-content:space-between;margin-top:10px">
+<span style="font-size:.7rem;color:#888">🔒 Stored locally only</span>
+<div class="fr">
+<button class="btn bs bi" id="tb">🧪 TEST</button>
+<button class="btn bs bi" id="svb">💾 SAVE</button>
+</div>
+</div>
+</div>
+<div class="pn cc">
+<div class="ch" id="chist"></div>
+<div class="ci">
+<input type="text" id="ain" placeholder="Enter query..." autocomplete="off">
+<button class="btn" id="asb">🚀 SEND</button>
+<button class="btn bs bi" id="acb">🗑️</button>
+</div>
+</div>
+</div>
+</div>
+<div class="fc"><span style="color:var(--nm);text-shadow:0 0 6px rgba(189,0,255,.6);font-weight:700">Neural-X™️</span> Operations Console · v4.1</div>
+<nav id="bn">
+<button class="nb a" data-t="t-tools"><span class="ic">⚔</span><span>TOOLS</span></button>
+<button class="nb" data-t="t-payload"><span class="ic">☠</span><span>PAYLOAD</span></button>
+<button class="nb" data-t="t-code"><span class="ic">⌨</span><span>CODE</span></button>
+<button class="nb" data-t="t-crypt"><span class="ic">🔐</span><span>CRYPT</span></button>
+<button class="nb" data-t="t-ai"><span class="ic">🧠</span><span>AI</span></button>
+</nav>
+<script type="text/javascript">
+'use strict';
+(function(){
+const LOG=Object.freeze({
+info:m=>console.log(`%c[NX] ${m}`,'color:#00f0ff'),
+warn:m=>console.warn(`%c[NX/W] ${m}`,'color:#ffb000'),
+error:m=>console.error(`%c[NX/E] ${m}`,'color:#f55'),
+debug:m=>console.debug(`%c[NX/D] ${m}`,'color:#888'),
+ui:(m,type='info')=>{
+const box=document.getElementById('err-box');
+if(!box)return;
+box.textContent=m;
+box.className=`show err-${type}`;
+if(type!=='error')setTimeout(()=>box.classList.remove('show'),4000);
+}
+});
+const VALIDATE=Object.freeze({
+IP:/^(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)$/,
+FQ:/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/,
+API_KEY:/^gsk_[A-Za-z0-9]{32,}$/,
+ALIAS:/^[a-zA-Z0-9_\-]{1,32}$/,
+isIP(s){return typeof s==='string'&&this.IP.test(s)},
+isFQ(s){return typeof s==='string'&&this.FQ.test(s)&&s.length<=253},
+isHost(s){return this.isIP(s)||this.isFQ(s)},
+isPort(p){const n=parseInt(p,10);return Number.isInteger(n)&&n>=1&&n<=65535},
+isURL(u){if(typeof u!=='string'||u.length>2048)return false;try{const x=new URL(u);return x.protocol==='http:'||x.protocol==='https:'}catch{return false}},
+isValidAPIKey(k){return typeof k==='string'&&this.API_KEY.test(k)},
+isAlias(a){return typeof a==='string'&&this.ALIAS.test(a)},
+sanitize(s){if(s==null)return'';const str=String(s);return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/<script[^>]*>.*?<\/script>/gi,'').replace(/on\w+\s*=/gi,'')},
+trunc(s,m=10000){return typeof s==='string'&&s.length>m?s.slice(0,m)+'…':s||''}
+});
+class SS{
+#p;#m;#u;
+constructor(p='nx_'){
+this.#p=p;
+this.#m=new Map();
+this.#u=this.#probe();
+LOG.info(`Storage init: ${this.#u?'sessionStorage':'fallback Map'}`);
+}
+#probe(){
+try{
+if(typeof sessionStorage==='undefined')return false;
+const testKey='__p_'+Date.now();
+sessionStorage.setItem(testKey,'1');
+sessionStorage.removeItem(testKey);
+return true;
+}catch(e){
+LOG.warn('sessionStorage unavailable, using Map fallback');
+return false;
+}
+}
+#k(n){return this.#p+n}
+set(n,v){
+const k=this.#k(n);
+let s;
+try{s=JSON.stringify(v)}catch(e){LOG.error('JSON stringify failed');return false}
+if(s.length>4e6){LOG.warn('Storage quota exceeded');return false}
+if(this.#u){
+try{sessionStorage.setItem(k,s);return true}
+catch(e){LOG.warn('sessionStorage set failed, using Map');this.#m.set(k,s);return true}
+}
+this.#m.set(k,s);
+return true;
+}
+get(n,d=null){
+const k=this.#k(n);
+let r=null;
+if(this.#u){
+try{r=sessionStorage.getItem(k)}catch(e){r=this.#m.get(k)??null}
+}else{
+r=this.#m.get(k)??null;
+}
+if(r===null)return d;
+try{return JSON.parse(r)}catch(e){return d}
+}
+rm(n){
+const k=this.#k(n);
+if(this.#u)try{sessionStorage.removeItem(k)}catch(e){}
+this.#m.delete(k);
+}
+}
+class AC{
+#t;
+constructor(t=30000){this.#t=t}
+async post(u,b,h={},t=this.#t){
+if(!VALIDATE.isURL(u))throw new Error('Invalid URL');
+if(!('AbortController'in window))throw new Error('AbortController unsupported');
+const c=new AbortController();
+const id=setTimeout(()=>{try{c.abort()}catch(e){}},t);
+try{
+const r=await fetch(u,{
+method:'POST',
+headers:{'Content-Type':'application/json',...h},
+body:JSON.stringify(b),
+signal:c.signal,
+credentials:'omit'
+});
+clearTimeout(id);
+if(!r.ok){
+let e='Unknown';
+try{e=await r.text()}catch(err){}
+throw new Error(`HTTP ${r.status}: ${VALIDATE.sanitize(VALIDATE.trunc(e,500))}`);
+}
+const ct=r.headers.get('content-type')||'';
+if(!ct.includes('application/json'))throw new Error(`Unexpected content-type: ${ct}`);
+return await r.json();
+}catch(e){
+clearTimeout(id);
+if(e.name==='AbortError')throw new Error(`Timeout after ${Math.round(t/1000)}s`);
+if(e instanceof TypeError)throw new Error('Network/CORS error');
+throw e;
+}
+}
+}
+const TOOLS=[
+{n:'Nmap',d:'Network discovery and security auditing',c:'nmap -sS -sV -O -p- --script=vuln {TARGET}',l:'https://nmap.org'},
+{n:'Metasploit',d:'Penetration testing platform',c:'msfconsole -q -x "use {MODULE}; set RHOSTS {TARGET}; exploit"',l:'https://www.metasploit.com'},
+{n:'Sqlmap',d:'Automated SQL injection detection',c:'sqlmap -u "{URL}" --batch --dump --risk=2 --level=3',l:'https://sqlmap.org'},
+{n:'Nikto',d:'Web server scanner',c:'nikto -h {TARGET} -C all -o report.html',l:'https://cirt.net/Nikto2'},
+{n:'Gobuster',d:'Directory/file brute-forcing',c:'gobuster dir -u http://{TARGET} -w /usr/share/wordlists/dirb/common.txt -t 50',l:'https://github.com/OJ/gobuster'},
+{n:'Hydra',d:'Parallelized login cracker',c:'hydra -l {USER} -P /usr/share/wordlists/rockyou.txt {TARGET} ssh -t 6',l:'https://github.com/vanhauser-thc/thc-hydra'},
+{n:'Burp Suite',d:'Web application security testing',c:'burpsuite &',l:'https://portswigger.net/burp'},
+{n:'Wireshark',d:'Network protocol analyzer',c:'wireshark -i eth0 -k -f "port 80"',l:'https://www.wireshark.org'},
+{n:'Hashcat',d:'GPU-accelerated password recovery',c:'hashcat -m 0 -a 0 hashes.txt /usr/share/wordlists/rockyou.txt -O',l:'https://hashcat.net/hashcat/'},
+{n:'Impacket',d:'Network protocol toolkit for AD pentesting',c:'python3 /usr/share/doc/python3-impacket/examples/secretsdump.py {DOMAIN}/{USER}@{TARGET}',l:'https://github.com/fortra/impacket'}
+];
+const PT={exe:{p:'windows/x64/meterpreter',e:'exe'},elf:{p:'linux/x64/meterpreter',e:'elf'},apk:{p:'android/meterpreter',e:'apk'},py:{p:'python/meterpreter',e:'py'},sh:{p:'cmd/unix/reverse_bash',e:'sh'},ps1:{p:'windows/x64/meterpreter',e:'ps1'},raw:{p:'windows/x64/meterpreter',e:'raw'},c:{p:'windows/x64/meterpreter',e:'c'},dll:{p:'windows/x64/meterpreter',e:'dll'},msi:{p:'windows/x64/meterpreter',e:'msi'},vba:{p:'windows/meterpreter',e:'vba'},hta:{p:'windows/meterpreter',e:'hta'},jar:{p:'java/meterpreter',e:'jar'},war:{p:'java/meterpreter',e:'war'},php:{p:'php/meterpreter',e:'php'},asp:{p:'windows/meterpreter',e:'asp'},aspx:{p:'windows/meterpreter',e:'aspx'},macho:{p:'osx/x64/meterpreter',e:'macho'}};
+const PAYLOAD_TYPES={reverse_tcp:{suffix:'/reverse_tcp',lhost:true,lport:true},reverse_https:{suffix:'/reverse_https',lhost:true,lport:true},reverse_http:{suffix:'/reverse_http',lhost:true,lport:true},bind_tcp:{suffix:'/bind_tcp',lhost:false,lport:true},shell_reverse_tcp:{suffix:'/shell_reverse_tcp',lhost:true,lport:true},meterpreter_reverse_https:{suffix:'/meterpreter_reverse_https',lhost:true,lport:true}};
+const SNIPPETS={python:{'Networking':{'TCP Port Scanner':'import socket\nimport sys\n\ndef scan(target, ports=range(1,1025)):\n    print(f"[*] Scanning {target}")\n    for port in ports:\n        try:\n            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n            s.settimeout(0.5)\n            if s.connect_ex((target, port)) == 0:\n                print(f"[+] Port {port} OPEN")\n            s.close()\n        except Exception:\n            pass\n\nif __name__ == "__main__":\n    scan(sys.argv[1])','HTTP Client':'import urllib.request\nimport json\n\ndef fetch(url, headers=None):\n    req = urllib.request.Request(url, headers=headers or {})\n    with urllib.request.urlopen(req, timeout=10) as resp:\n        data = resp.read().decode("utf-8")\n        ct = resp.headers.get("Content-Type", "")\n        if "json" in ct:\n            return json.loads(data)\n        return data\n\nif __name__ == "__main__":\n    print(fetch("https://httpbin.org/get"))'},'Security':{'Hash File':'import hashlib\nimport sys\n\ndef hash_file(path, algo="sha256"):\n    h = hashlib.new(algo)\n    with open(path, "rb") as f:\n        while chunk := f.read(8192):\n            h.update(chunk)\n    return h.hexdigest()\n\nif __name__ == "__main__":\n    print(hash_file(sys.argv[1]))'}},bash:{'Networking':{'Port Scanner':'#!/bin/bash\nTARGET="$1"\nSTART="${2:-1}"\nEND="${3:-1024}"\necho "[*] Scanning $TARGET:$START-$END"\nfor p in $(seq $START $END); do\n  (echo >/dev/tcp/$TARGET/$p) 2>/dev/null && echo "[+] Port $p OPEN"\ndone\necho "[*] Done"'}},c:{'Networking':{'TCP Connect Scanner':'#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n#include <unistd.h>\n#include <sys/socket.h>\n#include <netinet/in.h>\n#include <arpa/inet.h>\n\nint scan_port(const char *ip, int port) {\n    int sock = socket(AF_INET, SOCK_STREAM, 0);\n    if (sock < 0) return -1;\n    struct sockaddr_in addr;\n    memset(&addr, 0, sizeof(addr));\n    addr.sin_family = AF_INET;\n    addr.sin_port = htons(port);\n    inet_pton(AF_INET, ip, &addr.sin_addr);\n    int res = connect(sock, (struct sockaddr *)&addr, sizeof(addr));\n    close(sock);\n    return res;\n}'}},powershell:{'Networking':{'Port Scanner':'$target = $args[0]\nfor ($p = 1; $p -le 1024; $p++) {\n    try {\n        $tcp = New-Object System.Net.Sockets.TcpClient\n        $async = $tcp.BeginConnect($target, $p, $null, $null)\n        if ($async.AsyncWaitHandle.WaitOne(500, $false) -and $tcp.Connected) {\n            Write-Host "[+] Port $p OPEN" -ForegroundColor Green\n            $tcp.Close()\n        }\n    } catch {} \n}'}},go:{'Networking':{'TCP Scanner':'package main\n\nimport (\n\t"fmt"\n\t"net"\n\t"os"\n\t"strconv"\n\t"time"\n)\n\nfunc main() {\n\tif len(os.Args) < 2 {\n\t\tfmt.Println("Usage: scanner <host>")\n\t\tos.Exit(1)\n\t}\n\tfor p := 1; p <= 1024; p++ {\n\t\taddr := fmt.Sprintf("%s:%d", os.Args[1], p)\n\t\tconn, err := net.DialTimeout("tcp", addr, 500*time.Millisecond)\n\t\tif err == nil {\n\t\t\tfmt.Printf("[+] Port %d OPEN\\n", p)\n\t\t\tconn.Close()\n\t\t}\n\t}\n}'}},rust:{'Networking':{'TCP Port Scanner':'use std::net::TcpStream;\nuse std::time::Duration;\nuse std::env;\n\nfn main() {\n    let args: Vec<String> = env::args().collect();\n    if args.len() < 2 {\n        println!("Usage: {} <host>", args[0]);\n        return;\n    }\n    for port in 1..=1024 {\n        let addr = format!("{}:{}", args[1], port);\n        if let Ok(_) = TcpStream::connect_timeout(&addr.parse().unwrap(), Duration::from_millis(500)) {\n            println!("[+] Port {} OPEN", port);\n        }\n    }\n}'}},ruby:{'Networking':{'TCP Port Scanner':'require \'socket\'\nrequire \'timeout\'\n\ndef scan(target, ports = 1..1024)\n  puts "[*] Scanning #{target}"\n  ports.each do |port|\n    begin\n      Timeout::timeout(0.5) do\n        sock = TCPSocket.new(target, port)\n        puts "[+] Port #{port} OPEN"\n        sock.close\n      end\n    rescue\n    end\n  end\nend\n\nscan(ARGV[0])'}},java:{'Networking':{'TCP Port Scanner':'import java.net.*;\n\npublic class PortScanner {\n    public static void main(String[] args) {\n        if (args.length < 1) {\n            System.out.println("Usage: PortScanner <host>");\n            return;\n        }\n        for (int port = 1; port <= 1024; port++) {\n            try (Socket socket = new Socket()) {\n                socket.connect(new InetSocketAddress(args[0], port), 500);\n                System.out.println("[+] Port " + port + " OPEN");\n            } catch (IOException e) {}\n        }\n    }\n}'}}};
+async function clip(t,id){
+const el=document.getElementById(id);
+if(!el)return;
+const o=el.textContent;
+try{
+if(navigator.clipboard&&window.isSecureContext){
+await navigator.clipboard.writeText(t);
+}else{
+const a=document.createElement('textarea');
+a.value=t;
+a.style.cssText='position:fixed;opacity:0;pointer-events:none';
+document.body.appendChild(a);
+a.select();
+try{document.execCommand('copy')}catch(e){}
+document.body.removeChild(a);
+}
+el.textContent='[✓ COPIED]';
+el.style.color='#0f8';
+if('vibrate'in navigator)navigator.vibrate(50);
+setTimeout(()=>{el.textContent=o;el.style.color=''},1500);
+}catch(e){
+el.textContent='[✗ FAILED]';
+el.style.color='#f55';
+setTimeout(()=>{el.textContent=o;el.style.color=''},1500);
+}
+}
+function renderTools(f=''){
+const g=document.getElementById('tgr'),c=document.getElementById('tcnt');
+if(!g)return;
+const fl=String(f||'').toLowerCase();
+const r=TOOLS.filter(t=>t.n.toLowerCase().includes(fl)||t.d.toLowerCase().includes(fl));
+while(g.firstChild)g.removeChild(g.firstChild);
+if(!r.length){
+const p=document.createElement('p');
+p.style.cssText='color:#888;text-align:center;grid-column:1/-1';
+p.textContent='No matches.';
+g.appendChild(p);
+}else{
+const fr=document.createDocumentFragment();
+r.forEach(t=>{
+const d=document.createElement('div');
+d.className='tgb';
+d.innerHTML=`<strong style="color:var(--nm)">${VALIDATE.sanitize(t.n)}</strong><br><span style="font-size:.7rem;color:#bbb">${VALIDATE.sanitize(t.d)}</span>`;
+d.title=VALIDATE.sanitize(t.c);
+fr.appendChild(d);
+});
+g.appendChild(fr);
+}
+if(c)c.textContent=String(r.length);
+}
+function genPayload(){
+try{
+const h=document.getElementById('plh').value.trim();
+const p=document.getElementById('plp').value.trim();
+const f=document.getElementById('plf').value;
+const a=document.getElementById('pla').value;
+const t=document.getElementById('plt').value;
+const e=document.getElementById('ple').value;
+if(!h&&PAYLOAD_TYPES[t].lhost)throw new Error('LHOST required for this payload type');
+if(h&&!VALIDATE.isHost(h))throw new Error('Invalid host');
+if(!VALIDATE.isPort(p))throw new Error('Invalid port');
+const pt=PT[f];
+if(!pt)throw new Error('Unknown format');
+let pl=pt.p;
+if(PAYLOAD_TYPES[t]){
+pl=pl.split('/')[0]+PAYLOAD_TYPES[t].suffix;
+}
+if(a==='x86'&&pl.includes('x64'))pl=pl.replace('x64','x86');
+if(a==='aarch64'&&pl.includes('x64'))pl=pl.replace('x64','aarch64');
+if(a==='armle'&&pl.includes('x64'))pl=pl.replace('x64','armle');
+let cmd=`msfvenom -p ${pl}`;
+if(PAYLOAD_TYPES[t].lhost)cmd+=` LHOST=${VALIDATE.sanitize(h)}`;
+cmd+=` LPORT=${VALIDATE.sanitize(p)}`;
+if(e!=='none')cmd+=` -e ${e}`;
+cmd+=` -f ${f==='ps1'?'psh':f} -o payload.${pt.e}`;
+document.getElementById('po').textContent=cmd;
+}catch(e){
+document.getElementById('po').textContent=`[ERROR] ${e.message}`;
+LOG.ui(`Payload error: ${e.message}`,'error');
+}
+}
+function updateCodeSelects(){
+const lang=document.getElementById('cl').value;
+const cats=Object.keys(SNIPPETS[lang]||{});
+const cc=document.getElementById('cc');
+cc.innerHTML='';
+cats.forEach(c=>{
+const o=document.createElement('option');
+o.value=c;
+o.textContent=c;
+cc.appendChild(o);
+});
+updateSnippets();
+}
+function updateSnippets(){
+const lang=document.getElementById('cl').value;
+const cat=document.getElementById('cc').value;
+const sn=SNIPPETS[lang]?.[cat]||{};
+const cs=document.getElementById('cs');
+cs.innerHTML='';
+Object.keys(sn).forEach(s=>{
+const o=document.createElement('option');
+o.value=s;
+o.textContent=s;
+cs.appendChild(o);
+});
+}
+function loadSnippet(){
+const lang=document.getElementById('cl').value;
+const cat=document.getElementById('cc').value;
+const name=document.getElementById('cs').value;
+const code=SNIPPETS[lang]?.[cat]?.[name]||'// Not found';
+document.getElementById('co').textContent=code;
+}
+async function sha256(text){
+const enc=new TextEncoder().encode(text);
+const buf=await crypto.subtle.digest('SHA-256',enc);
+return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+async function sha3(text){
+const enc=new TextEncoder().encode(text);
+try{
+const buf=await crypto.subtle.digest('SHA-3',enc);
+return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}catch(e){
+return'SHA-3_NOT_SUPPORTED_USE_SHA256';
+}
+}
+async function md5(text){
+const enc=new TextEncoder().encode(text);
+try{
+const buf=await crypto.subtle.digest('MD5',enc);
+return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}catch(e){
+return'MD5_NOT_SUPPORTED_IN_WEBCRYPTO';
+}
+}
+function pwdStrength(p){
+let s=0;
+if(p.length>=8)s++;
+if(p.length>=12)s++;
+if(p.length>=16)s++;
+if(/[a-z]/.test(p))s++;
+if(/[A-Z]/.test(p))s++;
+if(/[0-9]/.test(p))s++;
+if(/[^a-zA-Z0-9]/.test(p))s++;
+if(p.length>=20)s++;
+return Math.min(s,8);
+}
+function genKey(len,fmt){
+const buf=new Uint8Array(len);
+crypto.getRandomValues(buf);
+if(fmt==='hex')return Array.from(buf).map(b=>b.toString(16).padStart(2,'0')).join('');
+if(fmt==='b64')return btoa(String.fromCharCode(...buf));
+return Array.from(buf).join(' ');
+}
+class BG3D{
+#canvas;#ctx;#particles;#width;#height;#fps;#lastTime;#running;#mobile;
+constructor(canvasId){
+this.#canvas=document.getElementById(canvasId);
+this.#ctx=this.#canvas?.getContext('2d');
+this.#particles=[];
+this.#width=0;
+this.#height=0;
+this.#fps=60;
+this.#lastTime=0;
+this.#running=false;
+this.#mobile=this.#detectMobile();
+if(this.#mobile)this.#fps=30;
+this.#resize();
+this.#initParticles();
+window.addEventListener('resize',()=>this.#resize(),{passive:true});
+}
+#detectMobile(){
+return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)||navigator.hardwareConcurrency<=4||window.matchMedia('(max-width: 768px)').matches;
+}
+#resize(){
+if(!this.#canvas)return;
+this.#width=window.innerWidth;
+this.#height=window.innerHeight;
+this.#canvas.width=this.#width;
+this.#canvas.height=this.#height;
+}
+#initParticles(){
+const count=this.#mobile?40:100;
+this.#particles=[];
+for(let i=0;i<count;i++){
+this.#particles.push({x:Math.random()*this.#width,y:Math.random()*this.#height,z:Math.random()*this.#width,pz:0,size:Math.random()*2+0.5});
+}
+}
+#draw(){
+if(!this.#ctx)return;
+this.#ctx.fillStyle='rgba(5,2,10,0.1)';
+this.#ctx.fillRect(0,0,this.#width,this.#height);
+this.#ctx.fillStyle='#fff';
+for(const p of this.#particles){
+p.pz=p.z;
+p.z-=2;
+if(p.z<=0){
+p.x=Math.random()*this.#width;
+p.y=Math.random()*this.#height;
+p.z=this.#width;
+p.pz=p.z;
+}
+const sx=(p.x-this.#width/2)*(this.#width/p.z)+this.#width/2;
+const sy=(p.y-this.#height/2)*(this.#height/p.z)+this.#height/2;
+const px=(p.x-this.#width/2)*(this.#width/p.pz)+this.#width/2;
+const py=(p.y-this.#height/2)*(this.#height/p.pz)+this.#height/2;
+this.#ctx.beginPath();
+this.#ctx.moveTo(px,py);
+this.#ctx.lineTo(sx,sy);
+this.#ctx.lineWidth=p.size;
+this.#ctx.strokeStyle=`rgba(255,255,255,${1-p.z/this.#width})`;
+this.#ctx.stroke();
+}
+}
+#loop(timestamp){
+if(!this.#running)return;
+const delta=timestamp-this.#lastTime;
+if(delta>1000/this.#fps){
+this.#draw();
+this.#lastTime=timestamp;
+}
+requestAnimationFrame(t=>this.#loop(t));
+}
+start(){
+if(!this.#canvas||!this.#ctx||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+this.#running=true;
+requestAnimationFrame(t=>this.#loop(t));
+LOG.info('3D background started');
+}
+stop(){
+this.#running=false;
+}
+}
+class App{
+#s;#a;#hist=[];#busy=false;#bg;#retries={};
+constructor(){
+try{
+this.#s=new SS();
+this.#a=new AC(30000);
+this.#hist=this.#s.get('chat',[]);
+this.#bg=new BG3D('bg-canvas');
+LOG.info('App instance created');
+}catch(e){
+LOG.error(`App init failed: ${e.message}`);
+LOG.ui(`INIT FAILED: ${e.message}`,'error');
+throw e;
+}
+}
+boot(){
+try{
+this.#bindDisclaimer();
+this.#bindNav();
+this.#bindTools();
+this.#bindPayload();
+this.#bindCode();
+this.#bindCrypt();
+this.#bindAI();
+renderTools();
+updateCodeSelects();
+this.#renderChat();
+this.#loadAIConfig();
+this.#bg.start();
+LOG.info('Neural-X initialized successfully');
+}catch(e){
+LOG.error(`Boot failed: ${e.message}`);
+LOG.ui(`BOOT ERROR: ${e.message}`,'error');
+}
+}
+#bindDisclaimer(){
+const o=document.getElementById('dov');
+const a=document.getElementById('ac');
+const b=document.getElementById('ubtn');
+if(!o||!a||!b){LOG.error('Disclaimer elements not found');return}
+if(this.#s.get('disclaimer',false)){
+o.classList.add('h');
+a.classList.add('vis');
+}else{
+b.disabled=false;
+b.addEventListener('click',()=>{
+try{
+this.#s.set('disclaimer',true);
+o.classList.add('h');
+a.classList.add('vis');
+}catch(e){
+LOG.error(`Disclaimer save failed: ${e.message}`);
+}
+},{once:true});
+}
+}
+#bindNav(){
+document.querySelectorAll('.nb').forEach(b=>{
+b.addEventListener('click',()=>{
+document.querySelectorAll('.tc').forEach(t=>t.classList.remove('a'));
+document.querySelectorAll('.nb').forEach(n=>n.classList.remove('a'));
+document.getElementById(b.dataset.t)?.classList.add('a');
+b.classList.add('a');
+},{passive:true});
+});
+}
+#bindTools(){
+const s=document.getElementById('ts');
+let t;
+s?.addEventListener('input',()=>{
+clearTimeout(t);
+t=setTimeout(()=>renderTools(s.value),120);
+},{passive:true});
+}
+#bindPayload(){
+document.getElementById('gpb')?.addEventListener('click',genPayload);
+document.getElementById('cpb')?.addEventListener('click',()=>clip(document.getElementById('po').textContent,'po'));
+}
+#bindCode(){
+const cl=document.getElementById('cl');
+const cc=document.getElementById('cc');
+cl?.addEventListener('change',updateCodeSelects);
+cc?.addEventListener('change',updateSnippets);
+document.getElementById('gcb')?.addEventListener('click',loadSnippet);
+document.getElementById('ccb')?.addEventListener('click',()=>clip(document.getElementById('co').textContent,'co'));
+}
+#bindCrypt(){
+document.getElementById('hmd5')?.addEventListener('click',async()=>{
+const t=document.getElementById('hi').value;
+if(!t){document.getElementById('ho').textContent='[ERROR] Empty input';return}
+try{document.getElementById('ho').textContent=`MD5: ${await md5(t)}`}
+catch(e){document.getElementById('ho').textContent=`[ERROR] ${e.message}`}
+});
+document.getElementById('hsha')?.addEventListener('click',async()=>{
+const t=document.getElementById('hi').value;
+if(!t){document.getElementById('ho').textContent='[ERROR] Empty input';return}
+try{document.getElementById('ho').textContent=`SHA-256: ${await sha256(t)}`}
+catch(e){document.getElementById('ho').textContent=`[ERROR] ${e.message}`}
+});
+document.getElementById('hsha3')?.addEventListener('click',async()=>{
+const t=document.getElementById('hi').value;
+if(!t){document.getElementById('ho').textContent='[ERROR] Empty input';return}
+try{document.getElementById('ho').textContent=`SHA-3: ${await sha3(t)}`}
+catch(e){document.getElementById('ho').textContent=`[ERROR] ${e.message}`}
+});
+document.getElementById('eb64e')?.addEventListener('click',()=>{
+const t=document.getElementById('ei').value;
+document.getElementById('eo').textContent=t?btoa(unescape(encodeURIComponent(t))):'[ERROR] Empty input';
+});
+document.getElementById('eb64d')?.addEventListener('click',()=>{
+const t=document.getElementById('ei').value;
+try{document.getElementById('eo').textContent=t?decodeURIComponent(escape(atob(t))):'[ERROR] Empty input'}
+catch(e){document.getElementById('eo').textContent='[ERROR] Invalid Base64'}
+});
+document.getElementById('ehxe')?.addEventListener('click',()=>{
+const t=document.getElementById('ei').value;
+document.getElementById('eo').textContent=t?Array.from(new TextEncoder().encode(t)).map(b=>b.toString(16).padStart(2,'0')).join(''):'[ERROR] Empty input';
+});
+document.getElementById('ehxd')?.addEventListener('click',()=>{
+const t=document.getElementById('ei').value.replace(/\s/g,'');
+if(!t){document.getElementById('eo').textContent='[ERROR] Empty input';return}
+try{
+const bytes=t.match(/.{2}/g).map(b=>parseInt(b,16));
+document.getElementById('eo').textContent=new TextDecoder().decode(new Uint8Array(bytes));
+}catch(e){document.getElementById('eo').textContent='[ERROR] Invalid hex'}
+});
+document.getElementById('eurl')?.addEventListener('click',()=>{
+const t=document.getElementById('ei').value;
+document.getElementById('eo').textContent=t?encodeURIComponent(t):'[ERROR] Empty input';
+});
+document.getElementById('eurld')?.addEventListener('click',()=>{
+const t=document.getElementById('ei').value;
+try{document.getElementById('eo').textContent=t?decodeURIComponent(t):'[ERROR] Empty input'}
+catch(e){document.getElementById('eo').textContent='[ERROR] Invalid URL encoding'}
+});
+document.getElementById('pi')?.addEventListener('input',()=>{
+const p=document.getElementById('pi').value;
+const s=pwdStrength(p);
+const fl=document.getElementById('pf');
+const tx=document.getElementById('pt');
+const pct=Math.round((s/8)*100);
+fl.style.width=pct
