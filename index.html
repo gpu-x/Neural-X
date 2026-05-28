@@ -6,9 +6,9 @@
     <meta name="author" content="© GPU-X">
     <meta name="copyright" content="© GPU-X">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' blob:; style-src 'self' 'unsafe-inline'; object-src 'none';">
-    <title>Neural-X Kernel - © GPU-X</title>
+    <title>Neural-X System Gate - © GPU-X</title>
     <style>
-        /* CSS3 Architecture - Production Ready */
+        /* CSS3 Core Architecture - Nebula-Blue Immersive Design */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -23,16 +23,6 @@
             font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             color: #00d2ff;
         }
-        #neural-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 2;
-        }
         #nebula-canvas {
             position: absolute;
             top: 0;
@@ -42,31 +32,69 @@
             z-index: 1;
             pointer-events: none;
         }
-        .kernel-panel {
-            background: rgba(5, 5, 20, 0.85);
+        .ui-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hidden-screen {
+            display: none !important;
+            opacity: 0;
+        }
+        .panel-container {
+            background: rgba(5, 5, 20, 0.88);
             border: 1px solid #0055ff;
             border-radius: 8px;
-            padding: 2rem;
+            padding: 2.5rem;
             width: 90%;
-            max-width: 600px;
-            box-shadow: 0 0 30px rgba(0, 85, 255, 0.3);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
+            max-width: 650px;
+            box-shadow: 0 0 35px rgba(0, 85, 255, 0.25);
+            backdrop-filter: blur(12px);
         }
-        .kernel-header {
+        .panel-header {
             border-bottom: 1px solid #0055ff;
             padding-bottom: 1rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .kernel-title {
-            font-size: 1.5rem;
+        .panel-title {
+            font-size: 1.4rem;
             font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
             text-shadow: 0 0 10px #00d2ff;
+        }
+        /* Disclaimer Text Box Styling */
+        .disclaimer-box {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 85, 255, 0.4);
+            border-radius: 4px;
+            padding: 1.2rem;
+            max-height: 250px;
+            overflow-y: auto;
+            color: #a0c0ff;
+            font-family: monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+        .disclaimer-box::-webkit-scrollbar {
+            width: 6px;
+        }
+        .disclaimer-box::-webkit-scrollbar-thumb {
+            background: #0055ff;
+            border-radius: 3px;
         }
         .kernel-input {
             width: 100%;
@@ -83,20 +111,25 @@
             border-color: #00d2ff;
             box-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
         }
-        .kernel-btn {
+        .action-btn {
             background: linear-gradient(45deg, #0055ff, #00d2ff);
             border: none;
             color: white;
-            padding: 0.8rem 1.5rem;
+            padding: 0.9rem 2rem;
             font-weight: bold;
             border-radius: 4px;
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: transform 0.1s ease;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 15px rgba(0, 85, 255, 0.4);
         }
-        .kernel-btn:active {
-            transform: scale(0.98);
+        .action-btn:hover {
+            box-shadow: 0 0 25px rgba(0, 210, 255, 0.6);
+            transform: translateY(-1px);
+        }
+        .action-btn:active {
+            transform: translateY(1px);
         }
         .kernel-output {
             margin-top: 1rem;
@@ -104,8 +137,8 @@
             background: rgba(0, 0, 0, 0.4);
             border-left: 3px solid #00d2ff;
             font-family: monospace;
-            font-size: 0.9rem;
-            max-height: 150px;
+            font-size: 0.85rem;
+            max-height: 140px;
             overflow-y: auto;
             white-space: pre-wrap;
             word-break: break-all;
@@ -114,9 +147,10 @@
             position: absolute;
             bottom: 10px;
             right: 15px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             letter-spacing: 1px;
-            opacity: 0.6;
+            opacity: 0.5;
+            z-index: 3;
         }
     </style>
 </head>
@@ -124,34 +158,51 @@
 
     <canvas id="nebula-canvas"></canvas>
 
-    <div id="neural-container">
-        <div class="kernel-panel" id="main-panel">
-            <div class="kernel-header">
-                <div class="kernel-title">Neural-X Kernel</div>
-                <div style="font-size: 0.8rem;" id="fps-counter">60 FPS</div>
+    <div id="screen-disclaimer" class="ui-screen">
+        <div class="panel-container">
+            <div class="panel-header">
+                <div class="panel-title">EULA & Legal Disclaimer</div>
+                <div style="font-size: 0.75rem; color: #ff3366; font-weight: bold;">SECURE GATE</div>
             </div>
-            <input type="text" id="secure-input" class="kernel-input" placeholder="Inserisci payload sensibile per validazione..." autocomplete="off">
-            <button id="process-btn" class="kernel-btn">Esegui Elaborazione Nucleo</button>
-            <div id="output-log" class="kernel-output">In attesa di istruzioni di boot...</div>
+            <div class="disclaimer-box">
+                [AVVISO DI SICUREZZA E LIMITAZIONE DI RESPONSABILITÀ]<br><br>
+                L'utilizzo di questo software software ("Neural-X Kernel") è concesso sotto licenza esclusiva di proprietà intellettuale di GPU-X. L'architettura viene fornita "COSI COM'È" ("AS IS"), senza garanzie di alcun tipo, esplicite o implicite.<br><br>
+                In nessun caso il licenziante, gli sviluppatori o GPU-X saranno ritenuti responsabili per danni diretti, indiretti, incidentali o consequenziali (inclusi, a titolo esemplificativo, perdite di dati, interruzioni dell'attività o bug computazionali) derivanti dall'uso o dall'incapacità di utilizzare questo modulo software.<br><br>
+                L'utente finale si assume la responsabilità totale dei payload immessi nel sistema e dell'integrità operativa dell'ambiente di esecuzione locale. Procedendo, si dichiara di aver compreso e accettato i presenti termini di esclusione di responsabilità.
+            </div>
+            <div style="text-align: right;">
+                <button id="accept-gate-btn" class="action-btn">Accetta e Procedi</button>
+            </div>
         </div>
     </div>
 
-    <div class="watermark">POWERED BY SYSTEM Core v4.0 — © GPU-X</div>
+    <div id="screen-main" class="ui-screen hidden-screen">
+        <div class="panel-container">
+            <div class="panel-header">
+                <div class="panel-title">Neural-X Kernel</div>
+                <div style="font-size: 0.8rem;" id="fps-counter">-- FPS</div>
+            </div>
+            <input type="text" id="secure-input" class="kernel-input" placeholder="Inserisci payload sensibile per validazione..." autocomplete="off">
+            <button id="process-btn" class="action-btn" style="width: 100%;">Esegui Elaborazione Nucleo</button>
+            <div id="output-log" class="kernel-output">In attesa di sblocco definitivo...</div>
+        </div>
+    </div>
+
+    <div class="watermark">POWERED BY SYSTEM Core v4.5 — © GPU-X</div>
 
     <script>
         /**
          * @file Neural-X core system file.
-         * @description High-performance, high-security sandboxed web application.
+         * @description High-performance, high-security sandboxed web application with compliance gate.
          * @copyright © GPU-X. All rights reserved.
          */
 
         (function () {
             'use strict';
 
-            // Global Boundary & State Management
             const SystemConfig = Object.freeze({
                 copyright: "© GPU-X",
-                maxParticles: 500,
+                maxParticles: 550,
                 targetFps: 60
             });
 
@@ -159,7 +210,11 @@
             let workerInstance = null;
             let animationFrameId = null;
 
-            // DOM References
+            // DOM Screens & Elements
+            const screenDisclaimer = document.getElementById('screen-disclaimer');
+            const screenMain = document.getElementById('screen-main');
+            const acceptGateBtn = document.getElementById('accept-gate-btn');
+            
             const canvas = document.getElementById('nebula-canvas');
             const secureInput = document.getElementById('secure-input');
             const processBtn = document.getElementById('process-btn');
@@ -184,15 +239,12 @@
 
             /**
              * Security Module: Input Sanitization Engine
-             * Radical Regex sanitization against XSS, injection vectors, and structural breaches.
              */
             function sanitizeInput(inputString) {
                 if (typeof inputString !== 'string') return '';
-                // Block script, style, iframe, object tags, and suspicious javascript: pseudoprotocols
                 let clean = inputString.replace(/<[^>]*>/g, '');
                 clean = clean.replace(/javascript:/gi, '');
                 clean = clean.replace(/on\w+\s*=/gi, '');
-                // Convert structural characters to safe HTML entities
                 return clean.replace(/[&<>"'/]/g, function (match) {
                     const entities = {
                         '&': '&amp;',
@@ -207,18 +259,17 @@
             }
 
             /**
-             * Security Module: Anti-Tampering & Ghost-Debugger Self-Destruction
+             * Security Module: Anti-Tampering Self-Destruction
              */
             function initiateSelfDestruct(reason) {
                 systemActive = false;
                 cancelAnimationFrame(animationFrameId);
                 if (workerInstance) workerInstance.terminate();
                 
-                // Pure wipeout of visual and execution contexts
                 document.body.innerHTML = `<div style="color: #ff0055; padding: 3rem; font-family: monospace; text-align: center; font-weight: bold; background: #000; height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column;">
                     <h1>[PROTOCOL SECURITY BREACH - SELF DESTRUCT ACTIVATED]</h1>
-                    <p style="margin-top: 1rem; color: #555;">Unauthorized code manipulation or environment analysis detected.</p>
-                    <p style="margin-top: 0.5rem; font-size: 0.9rem;">Protected under exclusive licensing: © GPU-X</p>
+                    <p style="margin-top: 1rem; color: #555;">Unauthorized environment alteration or structural injection detected.</p>
+                    <p style="margin-top: 0.5rem; font-size: 0.9rem;">Exclusive ownership enforcement: © GPU-X</p>
                 </div>`;
                 
                 try {
@@ -230,22 +281,20 @@
             }
 
             function verifyEnvironmentIntegrity() {
-                // Verification of copyright signatures inside DOM structure
                 const metaAuthor = document.querySelector('meta[name="author"]');
                 const metaCopyright = document.querySelector('meta[name="copyright"]');
                 if (!metaAuthor || metaAuthor.getAttribute('content') !== SystemConfig.copyright ||
                     !metaCopyright || metaCopyright.getAttribute('content') !== SystemConfig.copyright) {
-                    initiateSelfDestruct("Missing or altered Intellectual Property Meta signatures.");
+                    initiateSelfDestruct("Intellectual Property tampering detected inside meta-signature blocks.");
                 }
             }
 
-            // Mutation Observer tracking structure defense
             const integrityObserver = new MutationObserver((mutations) => {
                 for (let mutation of mutations) {
                     if (mutation.type === 'childList' || mutation.type === 'attributes') {
-                        // Validate structural components presence
-                        if (!document.getElementById('nebula-canvas') || !document.getElementById('main-panel')) {
-                            initiateSelfDestruct("Core DOM Node deletion or structural manipulation detected.");
+                        if (!document.getElementById('nebula-canvas') || 
+                            (!document.getElementById('screen-disclaimer') && !document.getElementById('screen-main'))) {
+                            initiateSelfDestruct("Core operational DOM structure modified or intercepted.");
                         }
                     }
                 }
@@ -253,21 +302,17 @@
             integrityObserver.observe(document.body, { attributes: true, childList: true, subtree: true });
 
             /**
-             * Multithreading Engine: Blob-based Zero-Latency Web Worker
+             * Multithreading Engine: Blob-based Background Thread
              */
             const workerCodeString = `
                 self.onmessage = function(e) {
                     const data = e.data;
                     if (data.type === 'STRESS_TEST') {
                         let result = 0;
-                        // Simulation of complex workload (100+ operations loop)
-                        for (let i = 0; i < 500000; i++) {
+                        for (let i = 0; i < 600000; i++) {
                             result += Math.sin(i) * Math.cos(i);
                         }
                         self.postMessage({ type: 'TEST_COMPLETE', payload: data.payload, metric: result });
-                    } else if (data.type === 'ENCRYPT_DATA') {
-                        // High-speed array operations placeholder for localized data pipelines
-                        self.postMessage({ type: 'ENCRYPTION_ACK', status: 'SUCCESS' });
                     }
                 };
             `;
@@ -280,20 +325,19 @@
                     workerInstance.onmessage = function(e) {
                         if (!systemActive) return;
                         if (e.data.type === 'TEST_COMPLETE') {
-                            logToKernel(`Worker Operation Completed successfully. Input trace verified: [${e.data.payload}]`);
+                            logToKernel(`Worker Core Execution Verified. Hash trace matching payload: [${e.data.payload}]`);
                         }
                     };
-
                     workerInstance.onerror = function(err) {
-                        logToKernel(`Worker internal error caught: ${err.message}`);
+                        logToKernel(`Worker exception caught: ${err.message}`);
                     };
                 } catch (error) {
-                    logToKernel(`Worker initialization failure: ${error.message}`);
+                    logToKernel(`Worker deployment fault: ${error.message}`);
                 }
             }
 
             /**
-             * GPU-Accelerated Graphical Engine: Nebula-Blue 3D
+             * GPU Graphics Engine: Nebula-Blue Particle Field
              */
             const GraphicsEngine = (function () {
                 let ctx = null;
@@ -304,7 +348,6 @@
                 let frameCount = 0;
                 let fpsTimer = 0;
 
-                // Static Memory Buffer Structure for Particle properties to prevent dynamic allocations
                 function initBuffer() {
                     particles = [];
                     const max = SystemConfig.maxParticles;
@@ -312,10 +355,10 @@
                         particles.push({
                             x: Math.random(),
                             y: Math.random(),
-                            z: Math.random() * 2 + 0.5,
-                            speedX: (Math.random() - 0.5) * 0.002,
-                            speedY: (Math.random() - 0.5) * 0.002,
-                            radius: Math.random() * 1.5 + 0.5
+                            z: Math.random() * 2 + 0.4,
+                            speedX: (Math.random() - 0.5) * 0.0015,
+                            speedY: (Math.random() - 0.5) * 0.0015,
+                            radius: Math.random() * 1.6 + 0.4
                         });
                     }
                 }
@@ -328,9 +371,7 @@
                     canvas.width = width * dpr;
                     canvas.height = height * dpr;
                     ctx = canvas.getContext('2d');
-                    if (ctx) {
-                        ctx.scale(dpr, dpr);
-                    }
+                    if (ctx) ctx.scale(dpr, dpr);
                 }
 
                 function renderLoop(currentTime) {
@@ -339,34 +380,27 @@
                     const deltaTime = currentTime - lastFrameTime;
                     lastFrameTime = currentTime;
 
-                    // Frame-Budget Performance Calculation
                     frameCount++;
                     fpsTimer += deltaTime;
                     if (fpsTimer >= 1000) {
-                        if (fpsCounter) {
-                            fpsCounter.textContent = `${frameCount} FPS`;
-                        }
+                        if (fpsCounter) fpsCounter.textContent = `${frameCount} FPS`;
                         frameCount = 0;
                         fpsTimer = 0;
                     }
 
-                    // Adaptive load balancing: drop computation if frametime spikes excessively
-                    const performanceBudgetDrop = deltaTime > 33.3; // Drops below 30fps trigger defensive optimizations
+                    const performanceBudgetDrop = deltaTime > 33.3;
 
                     if (ctx) {
-                        ctx.fillStyle = 'rgba(2, 2, 8, 0.2)'; // Tail effect blending
+                        ctx.fillStyle = 'rgba(2, 2, 8, 0.25)';
                         ctx.fillRect(0, 0, width, height);
 
-                        const limit = performanceBudgetDrop ? Math.floor(SystemConfig.maxParticles * 0.5) : SystemConfig.maxParticles;
+                        const limit = performanceBudgetDrop ? Math.floor(SystemConfig.maxParticles * 0.4) : SystemConfig.maxParticles;
 
                         for (let i = 0; i < limit; i++) {
                             const p = particles[i];
-                            
-                            // Transform static normalized coordinates to actual screen dimensions
                             p.x += p.speedX / p.z;
                             p.y += p.speedY / p.z;
 
-                            // Edge boundaries recycling
                             if (p.x < 0 || p.x > 1) p.x = Math.random();
                             if (p.y < 0 || p.y > 1) p.y = Math.random();
 
@@ -376,12 +410,10 @@
 
                             ctx.beginPath();
                             ctx.arc(screenX, screenY, size, 0, Math.PI * 2);
-                            // Nebula-Blue exact palette spectrum
-                            ctx.fillStyle = `rgba(0, ${Math.floor(150 + (p.z * 40))}, 255, ${1 - (p.z / 2.5)})`;
+                            ctx.fillStyle = `rgba(0, ${Math.floor(140 + (p.z * 45))}, 255, ${1 - (p.z / 2.6)})`;
                             ctx.fill();
                         }
                     }
-
                     animationFrameId = requestAnimationFrame(renderLoop);
                 }
 
@@ -396,22 +428,17 @@
                 };
             })();
 
-            /**
-             * Memory & Resource Allocation Cleanup Routine
-             */
             function cleanupHeavyObjects() {
                 try {
-                    // Prevent memory fragmentation and leaks
                     secureInput.value = '';
-                    console.clear();
                 } catch (e) {}
             }
 
             /**
-             * System Execution Entry Point
+             * Main Dashboard Core Logic Activation
              */
-            function bootSystem() {
-                verifyEnvironmentIntegrity();
+            function activateKernelDashboard() {
+                // Instantiation and runtime activation
                 initWebWorker();
                 GraphicsEngine.start();
 
@@ -421,30 +448,49 @@
 
                         const rawValue = secureInput.value;
                         if (!rawValue.trim()) {
-                            logToKernel("Attenzione: Input vuoto rilevato.");
+                            logToKernel("Attenzione: Iniezione di stringa vuota rifiutata.");
                             return;
                         }
 
-                        // Sanitize action sequence
                         const safeValue = sanitizeInput(rawValue);
                         logToKernel(`Input Sanificato Correttamente: ${safeValue}`);
 
-                        // Execution via high-performance Worker thread (Stress-Test implementation)
                         if (workerInstance) {
-                            logToKernel("Iniezione task nel Worker Thread per elaborazione asincrona...");
+                            logToKernel("Iniezione task nel Worker Thread per stress-test parallelo...");
                             workerInstance.postMessage({
                                 type: 'STRESS_TEST',
                                 payload: safeValue
                             });
                         }
-
                         cleanupHeavyObjects();
                     });
                 }
-                logToKernel("Kernel inizializzato correttamente. Stato operativo nominale.");
+                logToKernel("Kernel sbloccato. Stato operativo nominale a 60 FPS.");
             }
 
-            // Fire core infrastructure
+            /**
+             * System Boot Entrance Gate
+             */
+            function bootSystem() {
+                verifyEnvironmentIntegrity();
+
+                if (acceptGateBtn) {
+                    acceptGateBtn.addEventListener('click', function () {
+                        // Execution of transitional sequence between compliance stage and dashboard stage
+                        screenDisclaimer.style.opacity = '0';
+                        
+                        setTimeout(() => {
+                            screenDisclaimer.classList.add('hidden-screen');
+                            screenMain.classList.remove('hidden-screen');
+                            screenMain.style.opacity = '1';
+                            
+                            // Delayed activation to grant absolute zero layout breakage
+                            activateKernelDashboard();
+                        }, 500);
+                    });
+                }
+            }
+
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', bootSystem);
             } else {
