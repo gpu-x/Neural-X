@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GPU-X // Advanced Cyber Console</title>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'none'; object-src 'none'; img-src 'self' data:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self'; style-src 'self'; connect-src 'none'; object-src 'none'; img-src 'data:';">
     <meta name="author" content="© GPU-X">
     <meta name="copyright" content="© GPU-X. All Rights Reserved.">
     <link rel="stylesheet" href="style.css">
@@ -20,10 +20,10 @@
         </header>
 
         <main>
-            <div class="sidebar" id="sidebar-nav">
-                <button class="nav-btn active" data-target="mod-crypto">1. CRYPTO ENGINE</button>
-                <button class="nav-btn" data-target="mod-factory">2. CODE FACTORY</button>
-                <button class="nav-btn" data-target="mod-tools">3. TOOL DIRECTORY</button>
+            <div class="sidebar">
+                <button class="nav-btn active" id="btn-crypto">1. CRYPTO ENGINE</button>
+                <button class="nav-btn" id="btn-factory">2. CODE FACTORY</button>
+                <button class="nav-btn" id="btn-tools">3. TOOL DIRECTORY</button>
             </div>
 
             <div class="workspace">
@@ -44,16 +44,16 @@
                         <textarea id="crypto-input" rows="3" placeholder="Inserisci la stringa da elaborare..."></textarea>
                     </div>
                     <div class="grid-split">
-                        <button class="btn-action" id="btn-crypto-encode">Esegui Codifica (Encode)</button>
-                        <button class="btn-action" id="btn-crypto-decode" style="background: #11382b;">Esegui Decodifica (Decode)</button>
+                        <button class="btn-action" id="btn-encode">Esegui Codifica (Encode)</button>
+                        <button class="btn-action" id="btn-decode" style="background: #11382b;">Esegui Decodifica (Decode)</button>
                     </div>
                     <div class="console-output" id="crypto-output">// Output elaborazione crittografica...</div>
                     <div id="crypto-copy-container"></div>
                 </div>
 
                 <div id="mod-factory" class="module-panel">
-                    <h2 class="title-factory">⚡ 2. Generatore Industriale di Codice Avanzato</h2>
-                    <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px;">Seleziona un linguaggio strutturato dall'elenco esteso.</p>
+                    <h2 class="title-factory">⚡ 2. Generatore Industriale di Codice Avanzato (19 Linguaggi x 20 Script)</h2>
+                    <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px;">Seleziona un linguaggio strutturato dall'elenco esteso. Ciascuno contiene 20 algoritmi reali ottimizzati ad alte prestazioni.</p>
                     <div class="grid-split" style="margin-bottom: 12px;">
                         <div style="flex: 1;">
                             <label>Linguaggio di Programmazione:</label>
@@ -84,14 +84,14 @@
                             <select id="factory-script-idx"></select>
                         </div>
                     </div>
-                    <button class="btn-action" id="btn-factory-gen">Estrai Codice Perfetto</button>
-                    <div class="console-output" id="factory-output" style="font-family:Consolas, monospace; color:#aaffff; max-height:450px;">// Seleziona ed esegui per visualizzare il sorgente...</div>
+                    <button class="btn-action" id="btn-generate">Estrai Codice Perfetto</button>
+                    <div class="console-output" id="factory-output" style="font-family:Consolas, monospace; color:#aaffff; max-height:450px;">// Seleziona ed esegui per visualizzare il sorgente di livello industriale...</div>
                     <div id="factory-copy-container"></div>
                 </div>
 
                 <div id="mod-tools" class="module-panel">
-                    <h2 class="title-tools">🛠️ 3. Cybersecurity Tool Directory</h2>
-                    <input type="text" id="tool-search" class="search-bar" placeholder="🔍 Cerca tool per nome, funzioni o risorse...">
+                    <h2 class="title-tools">🛠️ 3. Cybersecurity Tool Directory (20 Strumenti Professionali)</h2>
+                    <input type="text" id="tool-search" class="search-bar" placeholder="🔍 Cerca tool per nome, funzioni o risorse (es. nmap, wireshark, hydra...)">
                     <div id="tools-container"></div>
                 </div>
             </div>
