@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GPU-X // Advanced Cyber Console</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'none'; object-src 'none'; img-src 'self' data:;">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <canvas id="nebula-canvas"></canvas>
+
+    <div class="app-container" id="app-core">
+        <header>
+            <div class="logo-area">ENGINE-X // GPU-X CORE</div>
+            <div class="intellectual-property">© GPU-X POWERED CONSOLE</div>
+        </header>
+
+        <main>
+            <div class="sidebar">
+                <button class="nav-btn active" id="btn-crypto">1. CRYPTO ENGINE</button>
+                <button class="nav-btn" id="btn-factory">2. CODE FACTORY</button>
+                <button class="nav-btn" id="btn-tools">3. TOOL DIRECTORY</button>
+            </div>
+
+            <div class="workspace">
+                <div id="mod-crypto" class="module-panel active">
+                    <h2 class="title-crypto">🔐 1. Generatore di Codifica e Decodifica Multi-Linguaggio</h2>
+                    <div class="input-group">
+                        <label>Seleziona Schema:</label>
+                        <select id="crypto-schema">
+                            <option value="base64">Base64 Encoding Standard</option>
+                            <option value="hex">Hexadecimal (Esadecimale Base16)</option>
+                            <option value="url">URL Encoding / Percent Encoding</option>
+                            <option value="base64url">Base64URL Safe-Schema (JWT Variant)</option>
+                            <option value="binary">Binary Stream Representation (Base2)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Input Buffer:</label>
+                        <textarea id="crypto-input" rows="3" placeholder="Inserisci la stringa..."></textarea>
+                    </div>
+                    <div class="grid-split">
+                        <button class="btn-action" id="exec-encode">Esegui Codifica</button>
+                        <button class="btn-action" style="background: #11382b;" id="exec-decode">Esegui Decodifica</button>
+                    </div>
+                    <div class="console-output" id="crypto-output">// Output elaborazione...</div>
+                    <div id="crypto-copy-container"></div>
+                </div>
+
+                <div id="mod-factory" class="module-panel">
+                    <h2 class="title-factory">⚡ 2. Generatore Industriale di Codice</h2>
+                    <div class="grid-split" style="margin-bottom: 12px;">
+                        <div style="flex: 1;">
+                            <label>Linguaggio:</label>
+                            <select id="factory-lang"></select>
+                        </div>
+                        <div style="flex: 1;">
+                            <label>Script:</label>
+                            <select id="factory-script-idx"></select>
+                        </div>
+                    </div>
+                    <button class="btn-action" id="exec-generate">Estrai Codice</button>
+                    <div class="console-output" id="factory-output">// Seleziona ed esegui...</div>
+                    <div id="factory-copy-container"></div>
+                </div>
+
+                <div id="mod-tools" class="module-panel">
+                    <h2 class="title-tools">🛠️ 3. Cybersecurity Tool Directory</h2>
+                    <input type="text" id="tool-search" class="search-bar" placeholder="🔍 Cerca tool...">
+                    <div id="tools-container"></div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <div>SYSTEM STATUS: LOCKDOWN SECURE</div>
+            <div class="performance-ticker" id="fps-ticker">FPS: -- // © GPU-X</div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
