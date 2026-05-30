@@ -17,7 +17,6 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-/* Solo elementi UI non selezionabili per usabilità */
 .nav-btn, .logo-area, .btn-action, .btn-copy, .sidebar, header, footer {
     user-select: none;
 }
@@ -181,4 +180,5 @@ footer { height: 35px; border-top: 1px solid var(--accent-dim); background: #040
     .btn-action, .btn-copy { width: auto; }
     .console-output { max-height: 500px; font-size: 0.85rem; }
 }
+
 @keyframes fadeIn { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
